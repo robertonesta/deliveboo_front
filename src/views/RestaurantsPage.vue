@@ -27,6 +27,15 @@ export default {
 <template>
     <div>
         <h1>pagina ristoranti</h1>
+        <div v-for="restaurant in restaurants">
+            <div class="card text-left">
+              <img class="card-img-top" src="holder.js/100px180/" alt="">
+              <div class="card-body">
+                <h4 class="card-title">{{restaurant.name}}</h4>
+                <p class="card-text">Body</p>
+              </div>
+            </div>
+        </div>
     </div>
 </template>
 

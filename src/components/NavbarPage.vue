@@ -26,7 +26,7 @@ export default {
                             <router-link to="/" class="nav-link active" aria-current="page">Home<span class="visually-hidden">(current)</span></router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/restaurants" class="nav-link">Restaurants</router-link>
+                            <router-link to="/restaurants" class="nav-link">Locali</router-link>
                         </li>
                     </ul>
                 </div>

@@ -1,11 +1,13 @@
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import NavbarPage from './components/NavbarPage.vue'
+import Footer from "./components/Footer.vue"
 
 export default {
     components: {
         HelloWorld,
-        NavbarPage
+        NavbarPage,
+        Footer
     },
 
 
@@ -15,6 +17,7 @@ export default {
 <template>
     <NavbarPage />
     <router-view></router-view>
+    <Footer />
 </template>
 
 <style lang="scss">

@@ -1,0 +1,26 @@
+@import "./variables";
+
+#header {
+    height:90px;
+    .logo {
+        position:relative;
+        .moto {
+            width: 23px;
+            position: absolute;
+            bottom: 5px;
+            z-index: 1;
+            left: -1000%;
+            animation:goHome 3s ease 0.5s forwards; 
+        }
+        @keyframes goHome {
+            0% {
+                left:-1000%;
+                rotate: -80deg;
+            }
+            100% {
+                left:18px;
+                rotate: 0deg;
+            }
+        }
+    }
+}

@@ -1,12 +1,16 @@
 <script>
 export default {
-    name: "HelloWorld",
+    name: "RestaurantDetails"
 }
 </script>
 
+
 <template>
-    <h1>Pagina della Home</h1>
+    <div>
+
+    </div>
 </template>
+
 
 <style lang="scss" scoped>
 

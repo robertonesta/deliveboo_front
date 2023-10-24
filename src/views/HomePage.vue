@@ -1,29 +1,21 @@
 <script>
-import HelloWorld from '../components/HelloWorld.vue'
+import HelloWorld from "../components/HelloWorld.vue";
 export default {
-    components: {
-        HelloWorld
-    },
-    data() {
-        return {
-
-        }
-    },
-    methods: {
-
-
-    },
-    mounted() {
-
-    }
-
-}
+  components: {
+    HelloWorld,
+  },
+  data() {
+    return {};
+  },
+  methods: {},
+  mounted() {},
+};
 </script>
 
 <template>
-    <div>
-        <HelloWorld />
-    </div>
+  <div>
+    <HelloWorld />
+  </div>
 </template>
 
 

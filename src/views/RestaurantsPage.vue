@@ -54,47 +54,23 @@ export default {
 </script>
 
 <template>
-    <div>
-        <h1>pagina ristoranti</h1>
-        <div v-for="restaurant in restaurants">
-            <div class="card text-left">
-              <img class="card-img-top" src="holder.js/100px180/" alt="">
-              <div class="card-body">
-                <h4 class="card-title">{{restaurant.name}}</h4>
-                <p class="card-text">Body</p>
-              </div>
-    <div class="container text-center">
-        <div>
-            <select v-model="selectedTypology">
-                <option v-for="typology in typologies" :key="typology.id" :value="typology.id">
-                    {{ typology.name }}
-                </option>
-                <!-- Altre opzioni typology... -->
-            </select>
-            <button @click="searchRestaurants">Cerca Ristoranti</button>
-        </div>
+        <div class="container text-center">
+            <h1>Ristoranti</h1>
+            <div>
+                <select v-model="selectedTypology">
+                    <option v-for="typology in typologies" :key="typology.id" :value="typology.id">
+                        {{ typology.name }}
+                    </option>
+                    <!-- Altre opzioni typology... -->
+                </select>
+                <button @click="searchRestaurants">Cerca Ristoranti</button>
+            </div>
 
-        <h1>Ristoranti</h1>
 
-        <div v-for="restaurant in restaurants" :key="restaurant.id">
-            {{ restaurant.name }}
-            <div class="container text-center">
-                <h1>Locali</h1>
-                <div class="row row-cols-5">
-                    <div class="col" v-for="restaurant in restaurants">
-                        <div class="card">
-                            <div class="card-header bg-none">
-                                {{ restaurant.name }}
-                            </div>
-                            <div class="card-body">
-                                <img class="w-100" :src="restaurant.photo" alt="">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div v-for="restaurant in restaurants" :key="restaurant.id">
+                {{ restaurant.name }}
             </div>
         </div>
-    </div>
 </template>
 
 

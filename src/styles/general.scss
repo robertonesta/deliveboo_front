@@ -1,2 +1,11 @@
 // Import all of Bootstrap's CSS
 @import "/node_modules/bootstrap/scss/bootstrap";
+
+@import './partials/variables.scss';
+@import './partials/header.scss';
+
+body {
+    background-color: $d-boo-background;
+    font-family: 'Open Sans', sans-serif;
+}
+

@@ -26,7 +26,19 @@ export default {
 
 <template>
     <div class="container text-center">
-        <h1>Ristoranti</h1>
+        <h1>Locali</h1>
+        <div class="row row-cols-5">
+            <div class="col" v-for="restaurant in restaurants">
+                <div class="card">
+                    <div class="card-header bg-none">
+                        {{ restaurant.name }}
+                    </div>
+                    <div class="card-body">
+                        <img class="w-100" :src="restaurant.photo" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 

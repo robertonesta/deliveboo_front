@@ -9,6 +9,7 @@ export default {
             server: "http://127.0.0.1:8000",
             restaurants_end_point: "/api/restaurants",
             typologies_end_point: "/api/typologies",
+            single_restaurant_endpoint: '/api/restaurants/'
         };
     },
     mounted() {
@@ -49,6 +50,21 @@ export default {
                     console.error(error);
                 });
         },
+        singleRestaurant() {
+            // Esegui una richiesta HTTP per inviare il valore selezionato al server Laravel
+            axios
+                .get(
+                    `${this.server}+${this.restaurants_end_point}/+${this.$route.params.slug}`
+                )
+                .then((response) => {
+                    // Gestisci la risposta dal server, ad esempio, aggiorna i risultati nella tua interfaccia utente
+                    //console.log(response.data.restaurants);
+                    //this.restaurants = response.data.restaurants;
+                })
+                .catch((error) => {
+                    //console.error(error);
+                });
+        },
     },
 };
 </script>
@@ -68,7 +84,7 @@ export default {
 
 
             <div v-for="restaurant in restaurants" :key="restaurant.id">
-                {{ restaurant.name }}
+               <router-link :to="{name:'restaurant', params:{slug: restaurant.slug}}">{{ restaurant.name }}</router-link> 
             </div>
         </div>
 </template>

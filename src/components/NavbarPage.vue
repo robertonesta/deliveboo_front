@@ -24,10 +24,10 @@ export default {
             <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavId">
                 <ul class="navbar-nav mt-2 mt-lg-0 px-5">
                     <li class="nav-item mx-2">
-                        <router-link to="/restaurants" class="nav-link fs-3 fw-semibold">Restaurants</router-link>
+                        <router-link to="/restaurants" class="nav-link fs-3 fw-semibold">Ristoranti</router-link>
                     </li>
                     <li class="nav-item mx-2">
-                        <a href="http://127.0.0.1:8000/login" class="nav-link fs-3 fw-semibold">Login</a>
+                        <a href="http://127.0.0.1:8000/login" class="nav-link fs-3 fw-semibold">Accedi</a>
                     </li>
                 </ul>
             </div>

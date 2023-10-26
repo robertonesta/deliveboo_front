@@ -5,22 +5,15 @@
 @import './partials/variables.scss';
 @import './partials/header.scss';
 @import './partials/footer.scss';
+html{
+    overflow-x: hidden;
+}
 
 body {
     background-color: $d-boo-background;
     font-family: 'Open Sans', sans-serif;
 }
 
-#footer{
-    background-color: $d-boo-darker;
-    color: $d-boo-orange;
-    h3{
-        font-weight: 800;
-    }
-    a{
-        text-decoration: none;
-        color: $d-boo-orange;
-    }
-}
+
 
 

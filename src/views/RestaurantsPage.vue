@@ -13,6 +13,7 @@ export default {
         };
     },
     mounted() {
+        //get all the restaurant
         axios
             .get(this.server + this.restaurants_end_point)
             .then((response) => {
@@ -23,6 +24,7 @@ export default {
                 console.log(err);
                 console.log(err.message);
             });
+        //typologies
         axios
             .get(this.server + this.typologies_end_point)
             .then((response) => {
@@ -70,23 +72,23 @@ export default {
 </script>
 
 <template>
-        <div class="container text-center">
-            <h1>Ristoranti</h1>
-            <div>
-                <select v-model="selectedTypology">
-                    <option v-for="typology in typologies" :key="typology.id" :value="typology.id">
-                        {{ typology.name }}
-                    </option>
-                    <!-- Altre opzioni typology... -->
-                </select>
-                <button @click="searchRestaurants">Cerca Ristoranti</button>
-            </div>
-
-
-            <div v-for="restaurant in restaurants" :key="restaurant.id">
-               <router-link :to="{name:'restaurant', params:{slug: restaurant.slug}}">{{ restaurant.name }}</router-link> 
-            </div>
+    <div class="container text-center">
+        <h1>Ristoranti</h1>
+        <div>
+            <select v-model="selectedTypology">
+                <option v-for="typology in typologies" :key="typology.id" :value="typology.id">
+                    {{ typology.name }}
+                </option>
+                <!-- Altre opzioni typology... -->
+            </select>
+            <button @click="searchRestaurants">Cerca Ristoranti</button>
         </div>
+
+
+        <div v-for="restaurant in restaurants" :key="restaurant.id">
+            <router-link :to="{ name: 'restaurant', params: { slug: restaurant.slug } }">{{ restaurant.name }}</router-link>
+        </div>
+    </div>
 </template>
 
 

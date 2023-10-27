@@ -3,37 +3,67 @@ export default {
     name: 'NavbarPage',
     data() {
         return {
-
+            go_to_front_end: 'http://localhost:5174/',
+            go_to_login: 'http://127.0.0.1:8000/login',
         }
+    },
+    mounted() {
+        //get Deliveboo
+        const delivebooWord = document.querySelector('#deliveboo').innerText
+        const delivebooElement = document.querySelector('#deliveboo')
+        //splitted
+        let delivebooSplitted = delivebooWord.split('')
+        //add transition delay
+        let delay = 0.3
+        //wrap
+        delivebooSplitted.forEach(letter => {
+            let span = document.createElement('span')
+            span.innerText = letter
+            span.style.opacity = 0;
+            span.style.transition = `opacity ${delay}s ease`
+            delivebooElement.appendChild(span)
+            delay += 0.3
+        });
+        //remove the previous text
+        delivebooElement.childNodes["0"].textContent = ''
+        //add total delay delay
+        delivebooElement.childNodes.forEach(child => {
+            if(child.innerText){
+                setTimeout(()=>{
+                    child.style.opacity = 1
+                }, 3000)
+            }
+        })
     }
 }
 </script>
 
 <template>
     <div>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark justify-content-around">
+        <nav class="navbar navbar-expand-sm navbar-dark justify-content-around shadow">
             <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
                 aria-label="Toggle navigation"></button>
-                <a href="http://localhost:5174/">
-                    <div class="logo">
-                        <img src="img/deliveboo-logo.png" alt="" class="" width="60">
-                        <img src="img/moto.png" alt="" class="moto">
-                    </div>
-                </a>
+            <a :href="go_to_front_end" class="d-flex gap-2 align-items-center text-decoration-none">
+                <div class="logo">
+                    <img src="img/deliveboo-logo.png" alt="" class="" width="60">
+                    <img src="img/moto.png" alt="" class="moto">
+                </div>
+                <span id="deliveboo" class="fs-2">Deliveboo</span>
+            </a>
+
             <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavId">
                 <ul class="navbar-nav mt-2 mt-lg-0 px-5">
                     <li class="nav-item mx-2">
                         <router-link to="/restaurants" class="nav-link fs-3 fw-semibold">Ristoranti</router-link>
                     </li>
                     <li class="nav-item mx-2">
-                        <a href="http://127.0.0.1:8000/login" class="nav-link fs-3 fw-semibold">Accedi</a>
+                        <a :href="go_to_login" class="nav-link fs-3 fw-semibold">Accedi</a>
                     </li>
                 </ul>
             </div>
         </nav>
     </div>
-        
 </template>
 
 
@@ -42,6 +72,19 @@ export default {
 @use '../styles/general.scss';
 
 .navbar {
+    height:90px;
+    background-color: $d-boo-darker;
+    .nav-link{
+        &:hover,
+        &:focus {
+            color:$d-boo-orange;
+        }
+    }
+
+    a[href="http://localhost:5174/"] {
+        color: $d-boo-orange;
+    }
+
 
     .navbar-collapse {
         flex-basis: auto;
@@ -75,4 +118,5 @@ export default {
 
 
     }
-}</style>
+}
+</style>

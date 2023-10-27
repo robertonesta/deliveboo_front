@@ -100,6 +100,9 @@
         text-decoration: none;
         color: $d-boo-dark;
     }
+	a.btn:hover {
+		box-shadow: none !important;
+	}
 
 }
 </style>

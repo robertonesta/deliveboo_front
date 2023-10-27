@@ -55,13 +55,15 @@ export default {
         </select>
         <button class="btn" @click="searchRestaurants">Cerca Ristoranti</button>
     </div>
-    <ul class="list-unstyled">
-        <li v-for="restaurant in filteredRestaurants" :key="restaurant.id">
-            <router-link :to="{ name: 'restaurant', params: { slug: restaurant.slug } }" class="text-decoration-none">
-                {{ restaurant.name }}
-            </router-link>
-        </li>
-    </ul>
+    <div id="select_typology">
+        <ul class="list-unstyled w-25">
+            <li v-for="restaurant in filteredRestaurants" :key="restaurant.id">
+                <router-link :to="{ name: 'restaurant', params: { slug: restaurant.slug } }" class="text-decoration-none">
+                    {{ restaurant.name }}
+                </router-link>
+            </li>
+        </ul>
+    </div>
 </template>
 
 <style lang="scss" scoped>
@@ -69,8 +71,11 @@ export default {
 @use '../styles/general.scss';
 
 ul {
-    height: 150px;
+    height: 110px;
     overflow-y: scroll;
+        ::-webkit-scrollbar {
+        display: none;
+        }
 }
 
 .btn {

@@ -40,16 +40,16 @@ export default {
 
 <template>
     <div>
-        <nav class="navbar navbar-expand-sm navbar-dark justify-content-around shadow">
+        <nav class="navbar navbar-expand-sm justify-content-around shadow">
             <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
                 aria-label="Toggle navigation"></button>
-            <a :href="go_to_front_end" class="d-flex gap-2 align-items-center text-decoration-none">
+            <a :href="go_to_front_end" class="d-flex gap-2 align-items-end text-decoration-none">
                 <div class="logo">
                     <img src="img/deliveboo-logo.png" alt="" class="" width="60">
                     <img src="img/moto.png" alt="" class="moto">
                 </div>
-                <span id="deliveboo" class="fs-2">Deliveboo</span>
+                <h2 id="deliveboo" class="fs-2 mb-0">Deliveboo</h2>
             </a>
 
             <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavId">
@@ -75,9 +75,10 @@ export default {
     height:90px;
     background-color: $d-boo-darker;
     .nav-link{
+        color: $d-boo-orange;
         &:hover,
         &:focus {
-            color:$d-boo-orange;
+            color:$d-boo-light;
         }
     }
 

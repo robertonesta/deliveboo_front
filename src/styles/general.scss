@@ -7,7 +7,11 @@
 @import './partials/footer.scss';
 html{
     overflow-x: hidden;
+    ::-webkit-scrollbar {
+        display: none;
+    }
 }
+
 
 body {
     background-color: $d-boo-background;

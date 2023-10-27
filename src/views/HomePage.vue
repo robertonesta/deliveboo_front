@@ -1,10 +1,10 @@
 <script>
 import SearchBar from "../components/SearchBar.vue";
-
+import Footer from "../components/Footer.vue";
 export default {
   components: {
     SearchBar,
-
+    Footer
   },
   data() {
     return {};
@@ -70,6 +70,7 @@ export default {
         </div>
       </div>
     </section>
+    <Footer />
   </div>
 </template>
 

@@ -1,10 +1,12 @@
 <script>
+import {store } from '../store.js'
 export default {
     name: 'NavbarPage',
     data() {
         return {
             go_to_front_end: 'http://localhost:5174/',
             go_to_login: 'http://127.0.0.1:8000/login',
+            store
         }
     },
     mounted() {
@@ -52,13 +54,19 @@ export default {
                 <h2 id="deliveboo" class="fs-2 mb-0">Deliveboo</h2>
             </a>
 
-            <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavId">
+            <div class="collapse navbar-collapse justify-content-end align-items-center" id="collapsibleNavId">
                 <ul class="navbar-nav mt-2 mt-lg-0 px-5">
                     <li class="nav-item mx-2">
                         <router-link to="/restaurants" class="nav-link fs-3 fw-semibold">Ristoranti</router-link>
                     </li>
                     <li class="nav-item mx-2">
                         <a :href="go_to_login" class="nav-link fs-3 fw-semibold">Accedi</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a href="" class="nav-link fs-3 fw-semibold">
+                            <i class="fa-solid fa-cart-shopping text-white"></i>
+                            {{ store.cart.length }}
+                        </a>
                     </li>
                 </ul>
             </div>

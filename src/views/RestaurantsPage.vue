@@ -30,23 +30,25 @@ export default {
 <template>
     <main class="restaurants">
         <div class="container text-center align">
-            <h1 class="my-5 text-white">Tutti i ristoranti</h1>
+            <h1 class="my-5 text-white fw-semibold">Tutti i ristoranti</h1>
             <div class="row g-5" v-if="restaurants">
-                <div class="col-12 col-sm-6 col-md-4 col-xl-3" v-for="restaurant in restaurants">
-                    <router-link :to="{ name: 'restaurant', params: { slug: restaurant.slug } }"
-                        class="text-decoration-none">
-                        <div class="card h-100 justify-content-between border-0 bg-transparent">
-                            <div class="card-header d-flex align-items-center justify-content-center fs-5 fw-semibold">
-                                <span class="p-1 rounded w-100 mb-4">{{ restaurant.name }}</span>
+                <transition-group tag="div" name="fade" mode="in-out" class="row g-5">
+                    <div class="col-12 col-sm-6 col-md-4 col-xl-3" v-for="restaurant in restaurants">
+                        <router-link :to="{ name: 'restaurant', params: { slug: restaurant.slug } }"
+                            class="text-decoration-none">
+                            <div class="card h-100 justify-content-between border-0 bg-transparent">
+                                <div class="card-header d-flex align-items-center justify-content-center fs-5 fw-semibold">
+                                    <span class="p-1 rounded w-100 mb-4">{{ restaurant.name }}</span>
+                                </div>
+                                <div class="card-img-top flex-grow-1 animate__animated animate__fadeInRight">
+                                    <img :src="restaurant.photo" alt="" class="rounded-3">
+                                </div>
+                                <!--                             <div class="card-footer d-flex align-items-center justify-content-center">{{ restaurant.address }}
+                                </div> -->
                             </div>
-                            <div class="card-img-top flex-grow-1">
-                                <img :src="restaurant.photo" alt="" class="rounded-3">
-                            </div>
-                            <!--                             <div class="card-footer d-flex align-items-center justify-content-center">{{ restaurant.address }}
-                            </div> -->
-                        </div>
-                    </router-link>
-                </div>
+                        </router-link>
+                    </div>
+                </transition-group>
             </div>
         </div>
     </main>
@@ -87,6 +89,7 @@ main.restaurants {
             span {
                 background-color: rgba(0, 0, 0, 0.742);
                 color: $d-boo-orange;
+                box-shadow: 0 0 3px $d-boo-orange;
             }
         }
 

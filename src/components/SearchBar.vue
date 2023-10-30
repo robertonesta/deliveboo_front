@@ -41,19 +41,40 @@ export default {
                 console.log(err);
                 console.log(err.message);
             });
+
+        const arrow = document.querySelector('.arrow svg')
+        const selectEl = document.querySelector('select')
+        let isOpen = false
+        selectEl.addEventListener('click', () => {
+            isOpen = !isOpen
+            if (isOpen){
+                arrow.style.rotate = '180deg'
+                arrow.style.transition = 'rotate 0.3s ease'
+            } else {
+                arrow.style.rotate = '0deg'
+            }
+        })
     }
 }
 </script>
 
 <template>
-    <div>
-        <select v-model="selectedTypology" class="me-4 w-25">
-            <option v-for="typology in typologies" :key="typology.id" :value="typology.id">
-                {{ typology.name }}
-            </option>
-            <!-- Altre opzioni typology... -->
-        </select>
-        <button class="btn" @click="searchRestaurants">Cerca Ristoranti</button>
+    <div class="d-flex gap-4 align-items-center">
+        <div class="select-wrapper position-relative w-25">
+            <select v-model="selectedTypology" class="me-4 rounded py-2 w-100">
+                <option v-for="typology in typologies" :key="typology.id" :value="typology.id">
+                    {{ typology.name }}
+                </option>
+                <!-- Altre opzioni typology... -->
+            </select>
+            <div class="arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="-5 -4.5 24 24">
+                    <path fill="#000000"
+                        d="m8 11.243l3.95-3.95a1 1 0 1 1 1.414 1.414l-5.657 5.657a.997.997 0 0 1-1.414 0L.636 8.707A1 1 0 1 1 2.05 7.293L6 11.243V1.657a1 1 0 1 1 2 0v9.586z" />
+                </svg>
+            </div>
+        </div>
+        <button class="btn " @click="searchRestaurants">Cerca Ristoranti</button>
     </div>
     <div id="select_typology">
         <ul class="list-unstyled w-25">
@@ -70,12 +91,28 @@ export default {
 @use '../styles/variables.scss' as *;
 @use '../styles/general.scss';
 
+.select-wrapper {
+    select {
+        background-color: transparent;
+        border: 3px solid $d-boo-dark;
+
+    }
+
+    .arrow {
+        position: absolute;
+        top: 7px;
+        right: -13px;
+        background-color: $d-boo-background;
+    }
+}
+
 ul {
     height: 110px;
     overflow-y: scroll;
-        ::-webkit-scrollbar {
+
+    ::-webkit-scrollbar {
         display: none;
-        }
+    }
 }
 
 .btn {

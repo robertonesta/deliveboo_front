@@ -44,9 +44,9 @@ export default {
             <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
                 data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
                 aria-label="Toggle navigation"></button>
-            <a :href="go_to_front_end" class="d-flex gap-2 align-items-end text-decoration-none">
+            <a :href="go_to_front_end" class="d-flex gap-2 align-items-center text-decoration-none">
                 <div class="logo">
-                    <img src="img/deliveboo-logo.png" alt="" class="" width="60">
+                    <img src="img/delivelogo.png" alt="" class="" width="60">
                     <img src="img/moto.png" alt="" class="moto">
                 </div>
                 <h2 id="deliveboo" class="fs-2 mb-0">Deliveboo</h2>

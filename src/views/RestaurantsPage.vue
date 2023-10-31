@@ -33,9 +33,9 @@ export default {
             <h1 class="my-5 text-white fw-semibold">Tutti i ristoranti</h1>
             <div class="row g-5" v-if="restaurants">
                 <transition-group tag="div" name="fade" mode="in-out" class="row g-5">
-                    <div class="col-12 col-sm-6 col-md-4 col-xl-3" v-for="restaurant in restaurants">
+                    <div class="col-12 col-sm-6 col-md-4 col-xl-3" v-for="restaurant in restaurants" :key="restaurant.id">
                         <router-link :to="{ name: 'restaurant', params: { slug: restaurant.slug } }"
-                            class="text-decoration-none">
+                            class="text-decoration-none" :key="restaurant.id">
                             <div class="card h-100 justify-content-between border-0 bg-transparent">
                                 <div class="card-header d-flex align-items-center justify-content-center fs-5 fw-semibold">
                                     <span class="p-1 rounded w-100 mb-4">{{ restaurant.name }}</span>

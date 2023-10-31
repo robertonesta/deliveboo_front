@@ -6,7 +6,8 @@ export default {
         return {
             go_to_front_end: 'http://localhost:5174/',
             go_to_login: 'http://127.0.0.1:8000/login',
-            store
+            store,
+            dishFromLocalStorage: 0
         }
     },
     mounted() {
@@ -36,7 +37,33 @@ export default {
                 }, 3000)
             }
         })
+
+        //get item from local storage
+        this.dishFromLocalStorage = this.getAllLocalStorageData()
+        
+    },
+    methods: {
+        getItem(store) {
+            store.localStorageCart = JSON.parse(localStorage.getItem(`dish`))
+            if (store.localStorageCart) {
+                return store.localStorageCart.length
+            } else {
+                return 0
+            }
+        },
+        //get all from local storage
+        getAllLocalStorageData() {
+            const allData = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const value = localStorage.getItem(key);
+                allData[key] = JSON.parse(value);
+            }
+            return allData;
+        }
     }
+
+
 }
 </script>
 
@@ -65,7 +92,7 @@ export default {
                     <li class="nav-item mx-2">
                         <router-link to="/cart" class="nav-link fs-3 fw-semibold cart">
                             <i class="fa-solid fa-cart-shopping text-white"></i>
-                            {{ store.cart.length }}
+                            {{ dishFromLocalStorage ? dishFromLocalStorage.length : 0 }}
                         </router-link>
                     </li>
                 </ul>

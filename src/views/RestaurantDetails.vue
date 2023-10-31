@@ -14,15 +14,24 @@ export default {
         };
     },
     methods: {
-        decrease(dish) {
+/*         decrease(dish) {
             if (dish.counter && dish.counter > 0) {
                 dish.counter--
                 store.cart.pop()
             } else {
                 dish.counter = 0
             }
+        }, */
+        decrease(dish) {
+            if (dish.counter && dish.counter > 1) {
+                dish.counter--
+            } else {
+                this.deleteDish(dish)
+                this.message = `Il prodotto ${dish.name} è stato rimosso dal carrello`
+                console.log(this.message)
+            }
         },
-        increase(dish) {
+/*         increase(dish) {
             if (!dish.counter) {
                 //contatore a 0
                 dish.counter = 0
@@ -31,7 +40,19 @@ export default {
             //incrementiamo il contatore di 1
             dish.counter++
             //mettiamo nel carrello
-        }
+        } */
+        increase(dish) {
+            if (!dish.counter) {
+                //contatore a 0
+                dish.counter = 0
+            }
+            //mettiamo il prodotto nel carrello
+            store.cart.push(dish)
+            //mettiamo il prodotto nel local storage
+            localStorage.setItem(`dish-${dish.name}`, JSON.stringify(store.cart));
+            //incrementiamo il contatore di 1
+            dish.counter++
+        },
     },
     mounted() {
         axios
@@ -114,11 +135,6 @@ export default {
                 </ul>
             </div>
         </div>
-        <!-- da animare -->
-        <a href="" class="nav-link fs-3 fw-semibold cart p-3 d-none">
-            <i class="fa-solid fa-cart-shopping text-white"></i>
-            {{ store.cart.length }}
-        </a>
     </main>
 </template>
 

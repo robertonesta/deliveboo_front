@@ -3,16 +3,18 @@ import { store } from "../store.js"
 export default {
     data() {
         return {
-            store
+            store,
+            message:''
         }
     },
     methods: {
         decrease(dish) {
-            if (dish.counter && dish.counter > 0) {
+            if (dish.counter && dish.counter > 1) {
                 dish.counter--
-                store.cart.pop()
             } else {
-                dish.counter = 0
+                this.deleteDish(dish)
+                this.message = `Il prodotto ${dish.name} è stato rimosso dal carrello`
+                console.log(this.message)
             }
         },
         increase(dish) {
@@ -20,10 +22,16 @@ export default {
                 //contatore a 0
                 dish.counter = 0
             }
+            //mettiamo il prodotto nel carrello
             store.cart.push(dish)
+            //get id dish
+            let dishId = dish.id
+            //mettiamo il prodotto nel local storage
+            localStorage.setItem(dishId, JSON.stringify(store.cart));
             //incrementiamo il contatore di 1
             dish.counter++
             //mettiamo nel carrello
+            let result = JSON.parse(localStorage.getItem('dish'));
         },
         removeDuplicates(cart) {
             return cart.filter((dish, index) => cart.indexOf(dish) === index);
@@ -38,7 +46,15 @@ export default {
             return total;
         },
         deleteDish(dish) {
-            store.cart.find((dish));
+            localStorage.removeItem('dish')
+            store.cart = store.cart.filter(item => {
+                return item != dish
+            })
+        }
+    },
+    computed: {
+        getItem(store){
+            store.cart = JSON.parse(localStorage.getItem('dish'))
         }
     }
 }
@@ -47,9 +63,10 @@ export default {
 <template>
     <div class="container">
         <h1 class="my-5 fw-semibold text-center">Carrello</h1>
+        <p v-if="message" class="alert alert-success">{{ message }}</p>
         <div v-if="store.cart && store.cart.length > 0">
             <ul class="list-unstyled">
-                <li v-for="dish in removeDuplicates(store.cart)">
+                <li v-for="(dish, index) in removeDuplicates(store.cart)">
                     <div class="info-dishes w-75 mx-auto px-5 d-flex justify-content-between align-items-center mb-3">
                         <div>
                             <h4>{{ dish.name }}</h4>
@@ -67,10 +84,11 @@ export default {
             <div class="fw-semibold text-center">
                 <h2>Totale</h2>
                 <p>€ {{ sum(store) }}</p>
+                <button class="btn text-white btn-success">Vai al checkout</button>
             </div>
         </div>
         <div v-else>
-            <p>Non ci sono prodotti nel carrello.</p>
+            <p class="text-center">Non ci sono prodotti nel carrello.</p>
         </div>
 
     </div>

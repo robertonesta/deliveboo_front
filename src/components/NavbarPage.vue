@@ -1,5 +1,5 @@
 <script>
-import {store } from '../store.js'
+import { store } from '../store.js'
 export default {
     name: 'NavbarPage',
     data() {
@@ -30,8 +30,8 @@ export default {
         delivebooElement.childNodes["0"].textContent = ''
         //add total delay delay
         delivebooElement.childNodes.forEach(child => {
-            if(child.innerText){
-                setTimeout(()=>{
+            if (child.innerText) {
+                setTimeout(() => {
                     child.style.opacity = 1
                 }, 3000)
             }
@@ -48,8 +48,8 @@ export default {
                 aria-label="Toggle navigation"></button>
             <a :href="go_to_front_end" class="d-flex gap-2 align-items-center text-decoration-none">
                 <div class="logo">
-                    <img src="img/delivelogo.png" alt="" class="" width="60">
-                    <img src="img/moto.png" alt="" class="moto">
+                    <img src="/public/img/delivelogo.png" alt="" class="" width="60" loading="lazy">
+                    <img src="/public/img/moto.png" alt="" class="moto" loading="lazy">
                 </div>
                 <h2 id="deliveboo" class="fs-2 mb-0">Deliveboo</h2>
             </a>
@@ -63,7 +63,7 @@ export default {
                         <a :href="go_to_login" class="nav-link fs-3 fw-semibold">Accedi</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a href="" class="nav-link fs-3 fw-semibold">
+                        <a href="" class="nav-link fs-3 fw-semibold cart">
                             <i class="fa-solid fa-cart-shopping text-white"></i>
                             {{ store.cart.length }}
                         </a>
@@ -80,15 +80,21 @@ export default {
 @use '../styles/general.scss';
 
 .navbar {
-    height:90px;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    height: 90px;
     background-color: $d-boo-darker;
-    .nav-link{
+
+    .nav-link {
         color: $d-boo-orange;
+
         &:hover,
         &:focus {
-            color:$d-boo-light;
+            color: $d-boo-light;
         }
     }
+
 
     a[href="http://localhost:5174/"] {
         color: $d-boo-orange;

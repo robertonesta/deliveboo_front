@@ -9,12 +9,13 @@ export default {
             restaurants_end_point: "/api/restaurants",
             restaurant: [],
             counter: 0,
-            store
+            store,
+            show: false
         };
     },
     methods: {
         decrease(dish) {
-            if(dish.counter && dish.counter > 0){
+            if (dish.counter && dish.counter > 0) {
                 dish.counter--
                 store.cart.pop()
             } else {
@@ -22,7 +23,7 @@ export default {
             }
         },
         increase(dish) {
-            if(!dish.counter){
+            if (!dish.counter) {
                 //contatore a 0
                 dish.counter = 0
             }
@@ -31,9 +32,7 @@ export default {
             dish.counter++
             //mettiamo nel carrello
             console.log(dish.counter)
-        },
-
-
+        }
     },
     mounted() {
         axios
@@ -46,7 +45,7 @@ export default {
                 console.log(err);
                 console.log(err.message);
             });
-    },
+    }
 }
 </script>
 
@@ -61,19 +60,19 @@ export default {
                     </div>
                 </div>
                 <div class="col p-3 d-flex flex-column gap-3 align-items-center">
-                    <h3 class="text-white text-center">{{ restaurant.name }}</h3>
-                    <ul class="list-unstyled" v-for="typology in restaurant.typologies">
-                        <li>
+                    <h3 class=" fs-1 text-center">{{ restaurant.name }}</h3>
+                    <address class="fs-5">{{ restaurant.address }}</address>
+                    <ul class="list-unstyled d-flex">
+                        <li v-for="typology in restaurant.typologies" class="mx-2">
                             {{ typology.name }}
                         </li>
                     </ul>
-                    <address>{{ restaurant.address }}</address>
                 </div>
             </div>
             <div class="row mt-5 px-5">
-                <h2 class="text-center fs-1">Menù</h2>
-                <h3 class="mb-3 fw-bolder">Piatti</h3>
-                <ul class="list-unstyled dishes mb-5">
+                <h2 class="text-center fs-1 mb-5"> <span>Menù</span></h2>
+                <h3 class="mb-3 fw-bolder fs-2">Piatti</h3>
+                <ul class="list-unstyled dishes p-5 mb-5">
                     <li v-for="(dish, index) in restaurant.dishes" :key="index">
                         <div v-if="!dish.ingredients.includes('acqua')"
                             class="d-flex justify-content-between align-items-center border_bottom py-3">
@@ -95,7 +94,7 @@ export default {
                     </li>
                 </ul>
                 <h3 class="mb-3 fw-bolder">Bevande</h3>
-                <ul class="list-unstyled dishes">
+                <ul class="list-unstyled dishes p-5">
                     <li v-for="dish in restaurant.dishes">
                         <div v-if="dish.ingredients.includes('acqua')"
                             class="d-flex justify-content-between align-items-center border_bottom py-3">
@@ -116,6 +115,11 @@ export default {
                 </ul>
             </div>
         </div>
+        <!-- da animare -->
+        <a href="" class="nav-link fs-3 fw-semibold cart p-3 d-none">
+            <i class="fa-solid fa-cart-shopping text-white"></i>
+            {{ store.cart.length }}
+        </a>
     </main>
 </template>
 
@@ -124,20 +128,48 @@ export default {
 @use '../styles/variables.scss' as *;
 @use '../styles/general.scss';
 
+
+
 .restaurant {
     background: $d-boo-background;
+    position: relative;
+    padding-top: 90px;
+
+    .cart {
+        position: fixed;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .row:nth-child(1) {
+        h3 {
+            color: $d-boo-dark;
+            border: 3px solid $d-boo-dark;
+            border-radius: 10px;
+            padding: 0.25rem 0.5rem;
+        }
+    }
 
     .row:nth-child(2) {
         h3 {
             color: $d-boo-orange;
         }
 
+        h2 {
+
+            span {
+                border-bottom: 3px solid $d-boo-dark;
+            }
+        }
+
+
         .dishes {
+            border: 3px solid $d-boo-dark;
+            border-radius: 10px;
+
             li {
 
-                .border_bottom {
-                    border-bottom: 3px solid $d-boo-dark;
-                }
 
                 .dish-photo {
                     width: 150px;

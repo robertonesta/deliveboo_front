@@ -18,6 +18,23 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+//Common rules
+.border_bottom {
+    border-bottom: 3px solid $d-boo-dark;
+}
+.cart {
+    background-color: $d-boo-darker;
+    border: 3px solid $d-boo-dark;
+    color:$d-boo-orange;
+    border-radius: 10px;
+    transition:border 0.25s ease;
+
+    &:hover {
+        border-color: $d-boo-orange;
+        color:$d-boo-light;
+    }
+}
+
 
 
 

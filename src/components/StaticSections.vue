@@ -12,12 +12,12 @@ export default {
         <div class="row p-3 align-items-center mt-4 row-cols-1 row-cols-md-2">
           <div class="col px-3 d-flex justify-content-center align-items-center flex-column gap-3">
             <h4 class="fw-bold">Trovi quello che cerchi</h4>
-            <img src="/img/map.jpg" alt="">
+            <img src="/public/img/map.jpg" alt="" loading="lazy">
             <p class="">Ti mostriamo da quali ristoranti nelle vicinanze puoi ordinare.</p>
           </div>
           <div class="col px-3 d-flex justify-content-center align-items-center flex-column gap-3">
             <h4 class="fw-bold">Consegna veloce</h4>
-            <img src="/img/delivery-scooter.png" alt="">
+            <img src="/public/img/delivery-scooter.png" alt="" loading="lazy">
             <p class="">Mangi dove vuoi al momento che decidi tu!</p>
           </div>
         </div>
@@ -36,7 +36,7 @@ export default {
             Registra il tuo ristorante, aggiungi il tuo menù, scegli le tipologie e aumenta la tua visibilità.
           </p>
           <div class="icons">
-            <img src="/img/register.png" alt="" class="w-25">
+            <img src="/public/img/register.png" alt="" class="w-25" loading="lazy">
           </div>
         </div>
         <div class="col-12 col-lg-6 text-center">
@@ -44,7 +44,7 @@ export default {
             Grazie al nostro servizio di consegna non farai mai aspettare i tuoi clienti!
           </p>
           <div class="icons">
-            <img src="/img/time.png" alt="" class="w-25">
+            <img src="/public/img/time.png" alt="" class="w-25" loading="lazy">
           </div>
         </div>
       </div>

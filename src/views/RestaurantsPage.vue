@@ -41,7 +41,7 @@ export default {
                                     <span class="p-1 rounded w-100 mb-4">{{ restaurant.name }}</span>
                                 </div>
                                 <div class="card-img-top flex-grow-1 animate__animated animate__fadeInRight">
-                                    <img :src="restaurant.photo" alt="" class="rounded-3">
+                                    <img :src="restaurant.photo" alt="" class="rounded-3" loading="lazy">
                                 </div>
                                 <!--                             <div class="card-footer d-flex align-items-center justify-content-center">{{ restaurant.address }}
                                 </div> -->
@@ -65,7 +65,7 @@ main.restaurants {
     background-repeat: no-repeat;
     background-size: cover;
     position: relative;
-    padding: 2rem 1rem 6rem;
+    padding: 90px 1rem 6rem;
 
     .card {
         cursor: pointer;

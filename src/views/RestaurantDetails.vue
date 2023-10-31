@@ -72,9 +72,9 @@ export default {
                 <h2 class="text-center fs-1 mb-5"> <span>Menù</span></h2>
                 <h3 class="mb-3 fw-bolder fs-2">Piatti</h3>
                 <ul class="list-unstyled dishes p-5 mb-5">
-                    <li v-for="(dish, index) in restaurant.dishes" :key="index">
+                    <li v-for="(dish, index) in restaurant.dishes">
                         <div v-if="!dish.ingredients.includes('acqua')"
-                            class="d-flex justify-content-between align-items-center border_bottom py-3">
+                         class="d-flex justify-content-between align-items-center border_bottom py-3">
                             <div class="info-dish">
                                 <h4 class="fw-bold">{{ dish.name }}</h4>
                                 <p class="fst-italic w-75">{{ dish.ingredients }}</p>

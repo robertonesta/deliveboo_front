@@ -63,10 +63,10 @@ export default {
                         <a :href="go_to_login" class="nav-link fs-3 fw-semibold">Accedi</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a href="" class="nav-link fs-3 fw-semibold cart">
+                        <router-link to="/cart" class="nav-link fs-3 fw-semibold cart">
                             <i class="fa-solid fa-cart-shopping text-white"></i>
                             {{ store.cart.length }}
-                        </a>
+                        </router-link>
                     </li>
                 </ul>
             </div>

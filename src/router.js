@@ -3,6 +3,7 @@ import HomePage from "./views/HomePage.vue"
 import RestaurantsPage from "./views/RestaurantsPage.vue"
 import RestaurantDetails from "./views/RestaurantDetails.vue"
 import NotFound from "./views/NotFound.vue"
+import CartPage from "./views/CartPage.vue"
 
 const router = createRouter({
     history: createWebHistory(),
@@ -26,6 +27,11 @@ const router = createRouter({
             path: "/:pathMatch(.*)*",
             name: "not-found",
             component: NotFound,
+        },
+        {
+            path: "/cart",
+            name: "cart",
+            component: CartPage,
         },  
     ]
 });

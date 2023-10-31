@@ -31,7 +31,6 @@ export default {
             //incrementiamo il contatore di 1
             dish.counter++
             //mettiamo nel carrello
-            console.log(dish.counter)
         }
     },
     mounted() {

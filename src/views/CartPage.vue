@@ -4,11 +4,33 @@ export default {
     data() {
         return {
             store,
-            message:''
+            message: ''
         }
     },
+    mounted() {
+        //prendiamo i dati dal localStorage e li mettiamo nel localStorageCart che si trova nello store
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            const value = JSON.parse(localStorage.getItem(key)); // Parse the stored JSON data
+            store.localStorageCart.push(value);
+        }
+        console.log(store.localStorageCart)
+    },
     methods: {
-        decrease(dish) {
+        add(dish) {
+            if (!dish.counter) {
+                //contatore a 1
+                dish.counter = 1
+            } else {
+                //incrementiamo il contatore di 1
+                dish.counter++
+            }
+            //mettiamo il prodotto nel carrello
+            store.cart.push(dish)
+            //mettiamo il prodotto nel local storage
+            localStorage.setItem(`${dish.name}`, JSON.stringify(dish));
+        },
+        remove(dish) {
             if (dish.counter && dish.counter > 1) {
                 dish.counter--
             } else {
@@ -17,31 +39,17 @@ export default {
                 console.log(this.message)
             }
         },
-        increase(dish) {
-            if (!dish.counter) {
-                //contatore a 0
-                dish.counter = 0
-            }
-            //mettiamo il prodotto nel carrello
-            store.cart.push(dish)
-            //get id dish
-            let dishId = dish.id
-            //mettiamo il prodotto nel local storage
-            localStorage.setItem(dishId, JSON.stringify(store.cart));
-            //incrementiamo il contatore di 1
-            dish.counter++
-            //mettiamo nel carrello
-            let result = JSON.parse(localStorage.getItem('dish'));
-        },
+
         removeDuplicates(cart) {
             return cart.filter((dish, index) => cart.indexOf(dish) === index);
         },
         sum(store) {
             let total = 0;
-            let totalSingleDish = 0;
-            store.cart.forEach(dish => {
-                totalSingleDish = parseFloat(dish.price);
-                total += totalSingleDish;
+            let priceDish = 0;
+            store.localStorageCart.forEach(dish => {
+                //prezzo piatto = prezzo singolo piatto per quantita'
+                priceDish = parseFloat(dish.price) * dish.counter;
+                total += priceDish;
             })
             return total;
         },
@@ -53,7 +61,7 @@ export default {
         }
     },
     computed: {
-        getItem(store){
+        getItem(store) {
             store.cart = JSON.parse(localStorage.getItem('dish'))
         }
     }
@@ -64,16 +72,16 @@ export default {
     <div class="container">
         <h1 class="my-5 fw-semibold text-center">Carrello</h1>
         <p v-if="message" class="alert alert-success">{{ message }}</p>
-        <div v-if="store.cart && store.cart.length > 0">
-            <ul class="list-unstyled">
-                <li v-for="(dish, index) in removeDuplicates(store.cart)">
+        <div v-if="store.localStorageCart && store.localStorageCart.length > 0">
+            <ul class="list-unstyled" v-if="store.localStorageCart && store.localStorageCart.length > 0">
+                <li v-for="dish in store.localStorageCart">
                     <div class="info-dishes w-75 mx-auto px-5 d-flex justify-content-between align-items-center mb-3">
                         <div>
                             <h4>{{ dish.name }}</h4>
                             <b class="me-3">€ {{ dish.price }}</b>
-                            <button @click="decrease(dish)" class="bg-transparent text-white fs-5 border-0">-</button>
+                            <button @click="remove(dish)" class="bg-transparent text-white fs-5 border-0">-</button>
                             <span class="mx-1">{{ !dish.counter ? 0 : dish.counter }}</span>
-                            <button @click="increase(dish)" class="bg-transparent fs-5 text-white border-0">+</button>
+                            <button @click="add(dish)" class="bg-transparent fs-5 text-white border-0">+</button>
                         </div>
                         <div>
                             <button @click="deleteDish(dish)"><i class="fa-solid fa-trash-can"></i></button>

@@ -14,15 +14,15 @@ export default {
         };
     },
     methods: {
-/*         decrease(dish) {
-            if (dish.counter && dish.counter > 0) {
-                dish.counter--
-                store.cart.pop()
-            } else {
-                dish.counter = 0
-            }
-        }, */
-        decrease(dish) {
+        /*         decrease(dish) {
+                    if (dish.counter && dish.counter > 0) {
+                        dish.counter--
+                        store.cart.pop()
+                    } else {
+                        dish.counter = 0
+                    }
+                }, */
+        remove(dish) {
             if (dish.counter && dish.counter > 1) {
                 dish.counter--
             } else {
@@ -31,40 +31,42 @@ export default {
                 console.log(this.message)
             }
         },
-/*         increase(dish) {
+        add(dish) {
             if (!dish.counter) {
-                //contatore a 0
-                dish.counter = 0
-            }
-            store.cart.push(dish)
-            //incrementiamo il contatore di 1
-            dish.counter++
-            //mettiamo nel carrello
-        } */
-        increase(dish) {
-            if (!dish.counter) {
-                //contatore a 0
-                dish.counter = 0
+                //contatore a 1
+                dish.counter = 1
+            } else {
+                //incrementiamo il contatore di 1
+                dish.counter++
             }
             //mettiamo il prodotto nel carrello
-            store.cart.push(dish)
+            //store.cart.push(dish)
             //mettiamo il prodotto nel local storage
-            localStorage.setItem(`dish-${dish.name}`, JSON.stringify(store.cart));
-            //incrementiamo il contatore di 1
-            dish.counter++
+            localStorage.setItem(`${dish.name}`, JSON.stringify(dish));
+            console.log(store.localStorageCart)
         },
     },
     mounted() {
+
         axios
             .get(`${this.server}/api/restaurants/${this.$route.params.slug}`)
             .then((response) => {
-                console.log(response)
+                //console.log(response)
                 this.restaurant = response.data.restaurant
             })
             .catch((err) => {
                 console.log(err);
                 console.log(err.message);
             });
+    },
+    created() {
+        //prendiamo i dati dal localStorage e li mettiamo nel localStorageCart che si trova nello store
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            const value = JSON.parse(localStorage.getItem(key)); // Parse the stored JSON data
+            store.cart.push(value);
+        }
+        console.log(store.cart[0])
     }
 }
 </script>
@@ -95,15 +97,15 @@ export default {
                 <ul class="list-unstyled dishes p-5 mb-5">
                     <li v-for="(dish, index) in restaurant.dishes">
                         <div v-if="!dish.ingredients.includes('acqua')"
-                         class="d-flex justify-content-between align-items-center border_bottom py-3">
+                            class="d-flex justify-content-between align-items-center border_bottom py-3">
                             <div class="info-dish">
                                 <h4 class="fw-bold">{{ dish.name }}</h4>
                                 <p class="fst-italic w-75">{{ dish.ingredients }}</p>
                                 <div class="purchase d-flex align-items-center">
                                     <b class="me-3">€ {{ dish.price }}</b>
-                                    <button @click="decrease(dish)" class="bg-transparent fs-5 border-0">-</button>
+                                    <button @click="remove(dish)" class="bg-transparent fs-5 border-0">-</button>
                                     <span class="mx-3">{{ !dish.counter ? 0 : dish.counter }}</span>
-                                    <button @click="increase(dish)" class="bg-transparent fs-5 border-0">+</button>
+                                    <button @click="add(dish)" class="bg-transparent fs-5 border-0">+</button>
                                 </div>
 
                             </div>
@@ -122,9 +124,9 @@ export default {
                                 <h4 class="fw-bold">{{ dish.name }}</h4>
                                 <div class="purchase d-flex align-items-center">
                                     <b class="me-3">€ {{ dish.price }}</b>
-                                    <button @click="decrease(dish)" class="bg-transparent fs-5 border-0">-</button>
+                                    <button @click="remove(dish)" class="bg-transparent fs-5 border-0">-</button>
                                     <span class="mx-3">{{ !dish.counter ? 0 : dish.counter }}</span>
-                                    <button @click="increase(dish)" class="bg-transparent fs-5 border-0">+</button>
+                                    <button @click="add(dish)" class="bg-transparent fs-5 border-0">+</button>
                                 </div>
                             </div>
                             <div class="drink-photo">

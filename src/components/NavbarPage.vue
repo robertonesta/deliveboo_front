@@ -88,7 +88,7 @@ export default {
                     <li class="nav-item mx-2">
                         <router-link to="/cart" class="nav-link fs-3 fw-semibold cart">
                             <i class="fa-solid fa-cart-shopping text-white"></i>
-                            <span v-if="totalDishesCart()">{{ totalDishesCart() }}</span>
+                            <span class="ms-2">{{ totalDishesCart() }}</span>
                         </router-link>
                     </li>
                 </ul>

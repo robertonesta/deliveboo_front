@@ -55,7 +55,7 @@ export default {
                             localStorage.setItem(`${dish.name}`, JSON.stringify(dish));
                         }
                     } else {
-                        if(dishCart.oldPosition === dish.oldPosition){
+                        if (dishCart.oldPosition === dish.oldPosition) {
                             //rimuoviamo il piatto dal carrello
                             store.cart.splice(store.cart.findIndex(dishCart => dishCart.oldPosition === dish.oldPosition), 1)
                             //store.cart.splice(dish.oldPosition, 1)
@@ -71,7 +71,7 @@ export default {
         sum(store) {
             let total = 0;
             let priceDish = 0;
-            if(store.cart && store.cart.length > 0){
+            if (store.cart && store.cart.length > 0) {
                 store.cart.forEach(dish => {
                     //prezzo piatto = prezzo singolo piatto per quantita'
                     priceDish = parseFloat(dish.price) * dish.counter;
@@ -80,6 +80,20 @@ export default {
                 return total;
             }
         },
+        deleteDish(dish) {
+            if (store.cart && store.cart.length > 0) {
+                store.cart.forEach(dishCart => {
+                    if (dishCart.oldPosition === dish.oldPosition) {
+                        //rimuoviamo il piatto dal carrello
+                        store.cart.splice(store.cart.findIndex(dishCart => dishCart.oldPosition === dish.oldPosition), 1)
+                        //store.cart.splice(dish.oldPosition, 1)
+                        console.log(store.cart)
+                        //rimuoviamo il piatto dal localStorage
+                        localStorage.removeItem(`${dish.name}`)
+                    }
+                })
+            }
+        }
     },
 }
 </script>
@@ -91,7 +105,8 @@ export default {
         <div v-if="store.cart && store.cart.length > 0">
             <ul class="list-unstyled">
                 <li v-for="(dish, index) in store.cart">
-                    <div class="info-dishes w-75 mx-auto px-5 d-flex justify-content-between align-items-center mb-3" v-if="dish.counter != 0">
+                    <div class="info-dishes w-75 mx-auto px-5 d-flex justify-content-between align-items-center mb-3"
+                        v-if="dish.counter != 0">
                         <div>
                             <h4>{{ dish.name }}</h4>
                             <b class="me-3">€ {{ dish.price }}</b>

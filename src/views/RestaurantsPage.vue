@@ -81,10 +81,7 @@ export default {
             }
             // Esegui una richiesta HTTP per inviare il valore selezionato al server Laravel
 
-            //TO DO: fare la deselezione
-
-
-            // fare la ricerca filtrata multipla
+            // TO DO: fare la ricerca filtrata multipla
         },
     },
 };

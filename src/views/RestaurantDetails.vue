@@ -14,31 +14,88 @@ export default {
         };
     },
     methods: {
-        decrease(dish) {
-            if (dish.counter && dish.counter > 0) {
-                dish.counter--
-                store.cart.pop()
-            } else {
-                dish.counter = 0
+        remove(dish) {
+            //controlliamo che ci siano i piatti nel carrello
+            if (store.cart && store.cart.length > 0) {
+                //controlliamo i piatti che ci sono
+                store.cart.forEach(dishCart => {
+                    //controlliamo che il nome del piatto che vogliamo levare si trovi nel carrello e che la quantita e' maggiore di 0 
+                    if (dishCart.name === dish.name && dishCart.counter >= 1) {
+                        //console.log(dish)
+                        dishCart.counter--
+                        if (localStorage[dish.name]) {
+                            //rimuoviamo il vecchio
+                            localStorage.removeItem(`${dish.name}`)
+                            //aggiungiamo il nuovo
+                            localStorage.setItem(`${dish.name}`, JSON.stringify(dish));
+                        }
+                    } else {
+                        if(dishCart.oldPosition === dish.oldPosition){
+                            //rimuoviamo il piatto dal carrello
+                            store.cart.splice(store.cart.findIndex(dishCart => dishCart.oldPosition === dish.oldPosition), 1)
+                            //store.cart.splice(dish.oldPosition, 1)
+                            //console.log(store.cart)
+                            //rimuoviamo il piatto dal localStorage
+                            localStorage.removeItem(`${dish.name}`)
+                        }
+                    }
+                })
             }
+
         },
-        increase(dish) {
-            if (!dish.counter) {
-                //contatore a 0
-                dish.counter = 0
+        add(dish, index) {
+            //console.log(dish, 'dish')
+            if (store.cart.includes(dish)) {
+                //console.log(store.cart, `dentro includes`)
+                store.cart.forEach(dishCart => {
+                    if (dishCart.oldPosition === dish.oldPosition) {
+                        dishCart.counter++
+                    }
+                })
+                //incrementiamo il contatore di 1
+                //dish.counter++
+                //store.cart[index].counter++
+                //console.log(store.cart)
+                if (localStorage[dish.name]) {
+                    //rimuoviamo il vecchio
+                    localStorage.removeItem(`${dish.name}`)
+                    //aggiungiamo il nuovo
+                    localStorage.setItem(`${dish.name}`, JSON.stringify(dish));
+                }
+            } else {
+                //contatore a 1
+                dish.counter++
+                //aggiungiamo la sua posizione come proprieta'
+                dish.oldPosition = index
+                //mettiamo il prodotto nel carrello
+                store.cart.push(dish)
+                //mettiamo il prodotto nel local storage
+                localStorage.setItem(`${dish.name}`, JSON.stringify(dish));
+                //console.log(store.cart, `dentro l'if !dish.counter`)
             }
-            store.cart.push(dish)
-            //incrementiamo il contatore di 1
-            dish.counter++
-            //mettiamo nel carrello
         }
+
     },
     mounted() {
         axios
             .get(`${this.server}/api/restaurants/${this.$route.params.slug}`)
             .then((response) => {
-                console.log(response)
+                //Diamo i dati al ristorante dall' API
                 this.restaurant = response.data.restaurant
+                //se il carrello e il ristorante hanno i dati
+                if (store.cart && store.cart.length > 0 && this.restaurant && Object.keys(this.restaurant).length > 0) {
+                    //prendiamo il piatto dal carrello 
+                    store.cart.forEach(dishCart => {
+                        this.restaurant.dishes.forEach(dishRest => {
+                            if (dishRest.name === dishCart.name) {
+                                this.restaurant.dishes[dishCart.oldPosition] = dishCart
+                                console.log(this.restaurant.dishes, 'ristorante con piatti aggiornati')
+                            }
+                        })
+                    })
+                } else {
+                    console.log('non ci va')
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -46,6 +103,10 @@ export default {
             });
     }
 }
+
+
+
+
 </script>
 
 
@@ -74,15 +135,15 @@ export default {
                 <ul class="list-unstyled dishes p-5 mb-5">
                     <li v-for="(dish, index) in restaurant.dishes">
                         <div v-if="!dish.ingredients.includes('acqua')"
-                         class="d-flex justify-content-between align-items-center border_bottom py-3">
+                            class="d-flex justify-content-between align-items-center border_bottom py-3">
                             <div class="info-dish">
                                 <h4 class="fw-bold">{{ dish.name }}</h4>
                                 <p class="fst-italic w-75">{{ dish.ingredients }}</p>
                                 <div class="purchase d-flex align-items-center">
                                     <b class="me-3">€ {{ dish.price }}</b>
-                                    <button @click="decrease(dish)" class="bg-transparent fs-5 border-0">-</button>
-                                    <span class="mx-3">{{ !dish.counter ? 0 : dish.counter }}</span>
-                                    <button @click="increase(dish)" class="bg-transparent fs-5 border-0">+</button>
+                                    <button @click="remove(dish)" class="bg-transparent fs-5 border-0">-</button>
+                                    <span class="mx-3">{{ !dish.counter ? dish.counter = 0 : dish.counter }}</span>
+                                    <button @click="add(dish, index)" class="bg-transparent fs-5 border-0">+</button>
                                 </div>
 
                             </div>
@@ -94,16 +155,16 @@ export default {
                 </ul>
                 <h3 class="mb-3 fw-bolder">Bevande</h3>
                 <ul class="list-unstyled dishes p-5">
-                    <li v-for="dish in restaurant.dishes">
+                    <li v-for="(dish, index) in restaurant.dishes">
                         <div v-if="dish.ingredients.includes('acqua')"
                             class="d-flex justify-content-between align-items-center border_bottom py-3">
                             <div class="info-dish">
                                 <h4 class="fw-bold">{{ dish.name }}</h4>
                                 <div class="purchase d-flex align-items-center">
                                     <b class="me-3">€ {{ dish.price }}</b>
-                                    <button @click="decrease(dish)" class="bg-transparent fs-5 border-0">-</button>
-                                    <span class="mx-3">{{ !dish.counter ? 0 : dish.counter }}</span>
-                                    <button @click="increase(dish)" class="bg-transparent fs-5 border-0">+</button>
+                                    <button @click="remove(dish)" class="bg-transparent fs-5 border-0">-</button>
+                                    <span class="mx-3">{{ !dish.counter ? dish.counter = 0 : dish.counter }}</span>
+                                    <button @click="add(dish, index)" class="bg-transparent fs-5 border-0">+</button>
                                 </div>
                             </div>
                             <div class="drink-photo">
@@ -114,11 +175,6 @@ export default {
                 </ul>
             </div>
         </div>
-        <!-- da animare -->
-        <a href="" class="nav-link fs-3 fw-semibold cart p-3 d-none">
-            <i class="fa-solid fa-cart-shopping text-white"></i>
-            {{ store.cart.length }}
-        </a>
     </main>
 </template>
 

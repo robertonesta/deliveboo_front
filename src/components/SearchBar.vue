@@ -1,6 +1,6 @@
 <script>
 import axios from 'axios';
-import {store} from "../store.js"
+import { store } from "../store.js"
 export default {
     name: "SearchBar",
     data() {
@@ -13,12 +13,14 @@ export default {
             // Esegui una richiesta HTTP per inviare il valore selezionato al server Laravel
             axios
                 .post(
-                    `http://127.0.0.1:8000/api/searchRestaurants?typologyId=${store.selectedTypology}`
+                    `${store.server}/api/searchRestaurants?typologyId=${store.selectedTypology}`
                 )
                 .then((response) => {
                     // Gestisci la risposta dal server, ad esempio, aggiorna i risultati nella tua interfaccia utente
                     console.log(response.data.restaurants);
                     store.filteredRestaurants = response.data.restaurants;
+                    store.typologyId = store.selectedTypology;
+                    console.log(store.typologyId)
                 })
                 .catch((error) => {
                     console.error(error);
@@ -32,7 +34,8 @@ export default {
             .then((response) => {
                 console.log(response);
                 store.typologies = response.data.typologies;
-            })
+
+                })
             .catch((err) => {
                 console.log(err);
                 console.log(err.message);
@@ -43,7 +46,7 @@ export default {
         let isOpen = false
         selectEl.addEventListener('click', () => {
             isOpen = !isOpen
-            if (isOpen){
+            if (isOpen) {
                 arrow.style.rotate = '180deg'
                 arrow.style.transition = 'rotate 0.3s ease'
             } else {
@@ -70,7 +73,7 @@ export default {
                 </svg>
             </div>
         </div>
-        <router-link to="/restaurant" class="btn" @click="searchRestaurants">Cerca Ristoranti</router-link>
+        <router-link to="/restaurants" class="btn" @click="searchRestaurants">Cerca Ristoranti</router-link>
     </div>
 </template>
 

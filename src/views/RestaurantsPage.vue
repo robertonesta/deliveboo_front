@@ -44,6 +44,28 @@ export default {
         };
     },
     methods: {
+        filterPerTypology(typology) {
+            // Esegui una richiesta HTTP per inviare il valore selezionato al server Laravel
+            axios
+                .post(
+                    `${store.server}/api/searchRestaurants?typologyId=${typology.id}`
+                )
+                .then((response) => {
+                    // Gestisci la risposta dal server, ad esempio, aggiorna i risultati nella tua interfaccia utente
+                    console.log(response);
+                    if (response.data.restaurants.length > 0) {
+                        store.filteredRestaurants = response.data.restaurants;
+                        typology.checked = true;
+                        console.log(store.filteredRestaurants)
+                    }
+                    //store.typologyId = store.selectedTypology;
+                    //console.log(store.typologyId)
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+                //TO DO: fare la deselezione e fare la ricerca filtrata multipla
+        },
     },
 };
 </script>
@@ -52,13 +74,16 @@ export default {
     <main class="restaurants">
         <div class="container text-center align">
             <h1 class="my-5 text-white fw-semibold">Ristoranti</h1>
-            <div class="text-white d-flex justify-content-center gap-3 flex-wrap">
-                <div class="form-check d-flex gap-1" v-for="typology in store.typologies">
-                    <input :checked="typology.checked" class="form-check-input" type="checkbox" :value="typology.name"
-                        :id="typology.name">
-                    <label class="form-check-label" :for="typology.name">
-                        {{ typology.name }}
-                    </label>
+            <div class="text-center text-white">
+                <h4>Filtra</h4>
+                <div class="text-white d-flex justify-content-center gap-3 flex-wrap">    
+                    <div class="form-check d-flex gap-1" v-for="typology in store.typologies">
+                        <input @click="filterPerTypology(typology)" :checked="typology.checked" class="form-check-input" type="checkbox" :value="typology.name"
+                            :id="typology.name">
+                        <label class="form-check-label" :for="typology.name">
+                            {{ typology.name }}
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="row g-5" v-if="store.filteredRestaurants && store.filteredRestaurants.length > 0">

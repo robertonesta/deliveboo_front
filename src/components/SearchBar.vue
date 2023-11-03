@@ -1,15 +1,11 @@
 <script>
 import axios from 'axios';
+import {store} from "../store.js"
 export default {
     name: "SearchBar",
     data() {
         return {
-            filteredRestaurants: [],
-            typologies: [],
-            selectedTypology: "",
-            server: "http://127.0.0.1:8000",
-            restaurants_end_point: "/api/restaurants",
-            typologies_end_point: "/api/typologies",
+            store
         }
     },
     methods: {
@@ -17,12 +13,12 @@ export default {
             // Esegui una richiesta HTTP per inviare il valore selezionato al server Laravel
             axios
                 .post(
-                    `http://127.0.0.1:8000/api/searchRestaurants?typologyId=${this.selectedTypology}`
+                    `http://127.0.0.1:8000/api/searchRestaurants?typologyId=${store.selectedTypology}`
                 )
                 .then((response) => {
                     // Gestisci la risposta dal server, ad esempio, aggiorna i risultati nella tua interfaccia utente
                     console.log(response.data.restaurants);
-                    this.filteredRestaurants = response.data.restaurants;
+                    store.filteredRestaurants = response.data.restaurants;
                 })
                 .catch((error) => {
                     console.error(error);
@@ -32,10 +28,10 @@ export default {
     mounted() {
         //typologies
         axios
-            .get(this.server + this.typologies_end_point)
+            .get(store.server + store.typologies_end_point)
             .then((response) => {
                 console.log(response);
-                this.typologies = response.data.typologies;
+                store.typologies = response.data.typologies;
             })
             .catch((err) => {
                 console.log(err);
@@ -61,8 +57,8 @@ export default {
 <template>
     <div class="d-flex gap-4 align-items-center">
         <div class="select-wrapper position-relative w-25">
-            <select v-model="selectedTypology" class="me-4 rounded py-2 w-100">
-                <option v-for="typology in typologies" :key="typology.id" :value="typology.id">
+            <select v-model="store.selectedTypology" class="me-4 rounded py-2 w-100">
+                <option v-for="typology in store.typologies" :key="typology.id" :value="typology.id">
                     {{ typology.name }}
                 </option>
                 <!-- Altre opzioni typology... -->
@@ -74,16 +70,7 @@ export default {
                 </svg>
             </div>
         </div>
-        <button class="btn " @click="searchRestaurants">Cerca Ristoranti</button>
-    </div>
-    <div id="select_typology">
-        <ul class="list-unstyled w-25">
-            <li v-for="restaurant in filteredRestaurants" :key="restaurant.id">
-                <router-link :to="{ name: 'restaurant', params: { slug: restaurant.slug } }" class="text-decoration-none">
-                    {{ restaurant.name }}
-                </router-link>
-            </li>
-        </ul>
+        <router-link to="/restaurant" class="btn" @click="searchRestaurants">Cerca Ristoranti</router-link>
     </div>
 </template>
 

@@ -45,26 +45,46 @@ export default {
     },
     methods: {
         filterPerTypology(typology) {
+            if (!typology.checked) {
+                typology.checked = true;
+                axios
+                    .post(
+                        `${store.server}/api/searchRestaurants?typologyId=${typology.id}`
+                    )
+                    .then((response) => {
+                        // Gestisci la risposta dal server, ad esempio, aggiorna i risultati nella tua interfaccia utente
+                        console.log(response);
+                        if (response.data.restaurants.length > 0) {
+                            store.filteredRestaurants = response.data.restaurants;
+                            typology.checked = true;
+                            console.log(store.filteredRestaurants)
+                        }
+                        //store.typologyId = store.selectedTypology;
+                        //console.log(store.typologyId)
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            } else {
+                typology.checked = false;
+                store.filteredRestaurants = null;
+                axios
+                    .get(store.server + store.restaurants_end_point)
+                    .then((response) => {
+                        console.log(response);
+                        store.restaurants = response.data.restaurants;
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        console.log(err.message);
+                    });
+            }
             // Esegui una richiesta HTTP per inviare il valore selezionato al server Laravel
-            axios
-                .post(
-                    `${store.server}/api/searchRestaurants?typologyId=${typology.id}`
-                )
-                .then((response) => {
-                    // Gestisci la risposta dal server, ad esempio, aggiorna i risultati nella tua interfaccia utente
-                    console.log(response);
-                    if (response.data.restaurants.length > 0) {
-                        store.filteredRestaurants = response.data.restaurants;
-                        typology.checked = true;
-                        console.log(store.filteredRestaurants)
-                    }
-                    //store.typologyId = store.selectedTypology;
-                    //console.log(store.typologyId)
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-                //TO DO: fare la deselezione e fare la ricerca filtrata multipla
+
+            //TO DO: fare la deselezione
+
+
+            // fare la ricerca filtrata multipla
         },
     },
 };
@@ -76,10 +96,10 @@ export default {
             <h1 class="my-5 text-white fw-semibold">Ristoranti</h1>
             <div class="text-center text-white">
                 <h4>Filtra</h4>
-                <div class="text-white d-flex justify-content-center gap-3 flex-wrap">    
+                <div class="text-white d-flex justify-content-center gap-3 flex-wrap">
                     <div class="form-check d-flex gap-1" v-for="typology in store.typologies">
-                        <input @click="filterPerTypology(typology)" :checked="typology.checked" class="form-check-input" type="checkbox" :value="typology.name"
-                            :id="typology.name">
+                        <input @click="filterPerTypology(typology)" :checked="typology.checked" class="form-check-input"
+                            type="checkbox" :value="typology.name" :id="typology.name">
                         <label class="form-check-label" :for="typology.name">
                             {{ typology.name }}
                         </label>

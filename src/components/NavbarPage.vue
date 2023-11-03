@@ -38,21 +38,26 @@ export default {
             }
         })
 
-        
+
     },
     methods: {
-/*         storageCartQuantity() {
-            return localStorage.length ? localStorage.length : 0
-        }, */
-        total(){
+        totalDishesCart() {
             let totalDishes = 0
-            store.localStorageCart.forEach( dish => {
+            store.cart.forEach(dish => {
                 totalDishes += dish.counter
             }
             )
             return totalDishes
         }
-    }
+    },
+    created() {
+        //prendiamo i dati dal localStorage e li mettiamo nel localStorageCart che si trova nello store
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            const value = JSON.parse(localStorage.getItem(key)); // Parse the stored JSON data
+            store.cart.push(value);
+        }
+    },
 
 
 }
@@ -83,7 +88,7 @@ export default {
                     <li class="nav-item mx-2">
                         <router-link to="/cart" class="nav-link fs-3 fw-semibold cart">
                             <i class="fa-solid fa-cart-shopping text-white"></i>
-                            {{total()}}
+                            <span v-if="totalDishesCart()">{{ totalDishesCart() }}</span>
                         </router-link>
                     </li>
                 </ul>

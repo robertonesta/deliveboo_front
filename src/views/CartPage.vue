@@ -25,9 +25,9 @@ export default {
         deleteDish(dish) {
             if (store.cart && store.cart.length > 0) {
                 store.cart.forEach(dishCart => {
-                    if (dishCart.oldPosition === dish.oldPosition) {
+                    if (dishCart.id === dish.id) {
                         //rimuoviamo il piatto dal carrello
-                        store.cart.splice(store.cart.findIndex(dishCart => dishCart.oldPosition === dish.oldPosition), 1)
+                        store.cart.splice(store.cart.findIndex(dishCart => dishCart.id === dish.id), 1)
                         //store.cart.splice(dish.oldPosition, 1)
                         console.log(store.cart)
                         //rimuoviamo il piatto dal localStorage

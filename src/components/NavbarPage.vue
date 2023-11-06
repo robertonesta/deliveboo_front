@@ -1,5 +1,6 @@
 <script>
 import { store } from '../store.js'
+import { useRoute } from 'vue-router'
 export default {
     name: 'NavbarPage',
     data() {
@@ -7,10 +8,12 @@ export default {
             go_to_front_end: 'http://localhost:5174/',
             go_to_login: 'http://127.0.0.1:8000/login',
             store,
-            dishFromLocalStorage: 0
+            dishFromLocalStorage: 0,
+            routeObject: useRoute()
         }
     },
     mounted() {
+        console.log(this.routeObject)
         //get Deliveboo
         const delivebooWord = document.querySelector('#deliveboo').innerText
         const delivebooElement = document.querySelector('#deliveboo')

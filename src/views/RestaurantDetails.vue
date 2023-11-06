@@ -1,8 +1,12 @@
 <script>
 import axios from 'axios';
 import { store } from '../store.js';
+import ModalComponent from '../components/ModalComponent.vue';
 export default {
     name: "RestaurantDetails",
+    components:{
+        ModalComponent
+    },
     data() {
         return {
             server: "http://127.0.0.1:8000",
@@ -10,7 +14,7 @@ export default {
             restaurant: null,
             counter: 0,
             store,
-            show: false
+            show: false,
         };
     },
     methods: {
@@ -33,7 +37,7 @@ export default {
                                 //this.restaurant.dishes[dishCart.oldPosition] = dishCart
                                 //dishRest.counter = dishCart.counter
                                 return dishCart
-                                console.log(this.restaurant.dishes, 'ristorante con piatti aggiornati')
+                                //console.log(this.restaurant.dishes, 'ristorante con piatti aggiornati')
                             } else {
                                 return dishRest
                             }
@@ -58,6 +62,7 @@ export default {
 
 <template>
     <main class="restaurant">
+        <ModalComponent />
         <div class="container pt-5">
             <div class="row" v-if="restaurant">
                 <div class="col p-3">

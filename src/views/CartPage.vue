@@ -10,64 +10,6 @@ export default {
     mounted() {
     },
     methods: {
-        add(dish, index) {
-            console.log(dish, 'dish')
-            if (store.cart.includes(dish)) {
-                //console.log(store.cart, `dentro includes`)
-                //incrementiamo il contatore di 1
-                //dish.counter++
-                store.cart.forEach(dishCart => {
-                    if (dishCart.oldPosition === dish.oldPosition) {
-                        dishCart.counter++
-                    }
-                })
-                //console.log(store.cart)
-                if (localStorage[dish.name]) {
-                    //rimuoviamo il vecchio
-                    localStorage.removeItem(`${dish.name}`)
-                    //aggiungiamo il nuovo
-                    localStorage.setItem(`${dish.name}`, JSON.stringify(dish));
-                }
-            } else {
-                //contatore a 1
-                dish.counter++
-                //aggiungiamo la sua posizione come proprieta'
-                dish.oldPosition = index
-                //mettiamo il prodotto nel carrello
-                store.cart.push(dish)
-                //mettiamo il prodotto nel local storage
-                localStorage.setItem(`${dish.name}`, JSON.stringify(dish));
-                //console.log(store.cart, `dentro l'if !dish.counter`)
-            }
-        },
-        remove(dish) {
-            //controlliamo che ci siano i piatti nel carrello
-            if (store.cart && store.cart.length > 0) {
-                //controlliamo i piatti che ci sono
-                store.cart.forEach(dishCart => {
-                    //controlliamo che il nome del piatto che vogliamo levare si trovi nel carrello e che la quantita e' maggiore di 0 
-                    if (dishCart.name === dish.name && dishCart.counter > 1) {
-                        dishCart.counter--
-                        if (localStorage[dish.name]) {
-                            //rimuoviamo il vecchio
-                            localStorage.removeItem(`${dish.name}`)
-                            //aggiungiamo il nuovo
-                            localStorage.setItem(`${dish.name}`, JSON.stringify(dish));
-                        }
-                    } else {
-                        if (dishCart.oldPosition === dish.oldPosition) {
-                            //rimuoviamo il piatto dal carrello
-                            store.cart.splice(store.cart.findIndex(dishCart => dishCart.oldPosition === dish.oldPosition), 1)
-                            //store.cart.splice(dish.oldPosition, 1)
-                            console.log(store.cart)
-                            //rimuoviamo il piatto dal localStorage
-                            localStorage.removeItem(`${dish.name}`)
-                        }
-                    }
-                })
-            }
-
-        },
         sum(store) {
             let total = 0;
             let priceDish = 0;
@@ -104,15 +46,15 @@ export default {
         <p v-if="message" class="alert alert-success">{{ message }}</p>
         <div v-if="store.cart && store.cart.length > 0">
             <ul class="list-unstyled">
-                <li v-for="(dish, index) in store.cart">
+                <li v-for="dish in store.cart">
                     <div class="info-dishes w-75 mx-auto px-5 d-flex justify-content-between align-items-center mb-3"
                         v-if="dish.counter != 0">
                         <div>
                             <h4>{{ dish.name }}</h4>
                             <b class="me-3">€ {{ dish.price }}</b>
-                            <button @click="remove(dish)" class="bg-transparent text-white fs-5 border-0">-</button>
+                            <button @click="store.remove(dish)" class="bg-transparent text-white fs-5 border-0">-</button>
                             <span class="mx-1">{{ !dish.counter ? 0 : dish.counter }}</span>
-                            <button @click="add(dish, index)" class="bg-transparent fs-5 text-white border-0">+</button>
+                            <button @click="store.add(dish)" class="bg-transparent fs-5 text-white border-0">+</button>
                         </div>
                         <div>
                             <button @click="deleteDish(dish)"><i class="fa-solid fa-trash-can"></i></button>

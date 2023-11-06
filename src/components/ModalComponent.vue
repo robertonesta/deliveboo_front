@@ -36,15 +36,24 @@ export default {
 
 .modal {
     background-color: $d-boo-dark-transparent;
+    .modal-content {
+        border:5px solid $d-boo-orange-light; 
+    }
     .modal-header {
         background: $d-boo-darker;
+        border-bottom: 3px solid $d-boo-orange-light;
         .btn-close {
-            background-color: $d-boo-light;
+            background-color: $d-boo-orange;
+            opacity:1;
+            transition: opacity 0.25s ease;
+            &:hover {
+                opacity: 0.8;
+            }
         }
     }
     .modal-body {
         background: $d-boo-darker;
-        color:$d-boo-orange;
+        color:$d-boo-background;
     }
 }
 </style>

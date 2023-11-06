@@ -11,7 +11,7 @@ export const store = reactive({
             store.cart.forEach(dishCart => {
                 //controlliamo che il nome del piatto che vogliamo levare si trovi nel carrello e che la quantita e' maggiore di 0 
                 if (dishCart.id === dish.id) {
-                    if (dishCart.counter >= 1) {
+                    if (dishCart.counter > 1) {
                         //console.log(dish)
                         dishCart.counter--
                         if (localStorage[dish.name]) {
@@ -56,6 +56,8 @@ export const store = reactive({
         } else {
             //se i piatti sono di ristoranti diversi
             if (store.cart.length > 0 && store.cart[0].restaurant_id != dish.restaurant_id) {
+                console.log(localStorage.length, 'localstorage')
+                console.log(store.cart.length, 'cart')
                 console.log('i ristoranti sono diversi')
                 this.modalMessage = "Non puoi selezionare piatti di ristoranti diversi."
                 this.isOpen = true

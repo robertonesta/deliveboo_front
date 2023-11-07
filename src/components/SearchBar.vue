@@ -10,17 +10,19 @@ export default {
     },
     methods: {
         searchRestaurants() {
-            // Esegui una richiesta HTTP per inviare il valore selezionato al server Laravel
+            // Esegui una richiesta HTTP per inviare il tipo di tipologia per cui vogliamo filtrare
             axios
                 .post(
                     `${store.server}/api/searchRestaurants?typologyId=${store.selectedTypology}`
                 )
                 .then((response) => {
                     // Gestisci la risposta dal server, ad esempio, aggiorna i risultati nella tua interfaccia utente
-                    console.log(response.data.restaurants);
+                    //console.log(response.data.restaurants);
+                    //Salvaiamo i ristoranti filtrati
                     store.filteredRestaurants = response.data.restaurants;
+                    //salviamo la tipologia richiesta da passare a RestaurantsPage
                     store.typologyId = store.selectedTypology;
-                    console.log(store.typologyId)
+                    console.log(store.typologyId,'tipologia richiesta')
                 })
                 .catch((error) => {
                     console.error(error);
@@ -32,7 +34,7 @@ export default {
         axios
             .get(store.server + store.typologies_end_point)
             .then((response) => {
-                console.log(response);
+                //console.log(response);
                 store.typologies = response.data.typologies;
 
                 })

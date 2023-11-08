@@ -1,44 +1,51 @@
 <script>
 import axios from 'axios';
 import { store } from '../store.js';
+import ModalComponent from '../components/ModalComponent.vue';
 export default {
     name: "RestaurantDetails",
+    components:{
+        ModalComponent
+    },
     data() {
         return {
             server: "http://127.0.0.1:8000",
             restaurants_end_point: "/api/restaurants",
-            restaurant: [],
+            restaurant: null,
             counter: 0,
             store,
-            show: false
+            show: false,
         };
     },
     methods: {
-        decrease(dish) {
-            if (dish.counter && dish.counter > 0) {
-                dish.counter--
-                store.cart.pop()
-            } else {
-                dish.counter = 0
-            }
-        },
-        increase(dish) {
-            if (!dish.counter) {
-                //contatore a 0
-                dish.counter = 0
-            }
-            store.cart.push(dish)
-            //incrementiamo il contatore di 1
-            dish.counter++
-            //mettiamo nel carrello
-        }
+
     },
     mounted() {
         axios
             .get(`${this.server}/api/restaurants/${this.$route.params.slug}`)
             .then((response) => {
-                console.log(response)
+                //Diamo i dati al ristorante dall' API
                 this.restaurant = response.data.restaurant
+                console.log(this.restaurant)
+                //se il carrello e il ristorante hanno i dati
+                if (store.cart && store.cart.length > 0 && this.restaurant) {
+                    //prendiamo il piatto dal carrello 
+                    store.cart.forEach(dishCart => {
+                        // controlliamo con map se la condizione è rispettata e ritorniamo tutto all' array da cui lo prendiamo, aggiornandolo
+                        this.restaurant.dishes = this.restaurant.dishes.map(dishRest => {
+                            if (dishRest.id === dishCart.id) {
+                                //this.restaurant.dishes[dishCart.oldPosition] = dishCart
+                                //dishRest.counter = dishCart.counter
+                                return dishCart
+                                //console.log(this.restaurant.dishes, 'ristorante con piatti aggiornati')
+                            } else {
+                                return dishRest
+                            }
+                        })
+                    })
+                } else {
+                    console.log('non ci va')
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -46,15 +53,20 @@ export default {
             });
     }
 }
+
+
+
+
 </script>
 
 
 <template>
     <main class="restaurant">
+        <ModalComponent />
         <div class="container pt-5">
-            <div class="row">
+            <div class="row" v-if="restaurant">
                 <div class="col p-3">
-                    <div class="photo w-75 mx-auto p-2">
+                    <div class="photo w-75 mx-auto p-2" >
                         <img :src="restaurant.photo" alt="" class="img-fluid rounded-2">
                     </div>
                 </div>
@@ -71,18 +83,18 @@ export default {
             <div class="row mt-5 px-5">
                 <h2 class="text-center fs-1 mb-5"> <span>Menù</span></h2>
                 <h3 class="mb-3 fw-bolder fs-2">Piatti</h3>
-                <ul class="list-unstyled dishes p-5 mb-5">
-                    <li v-for="(dish, index) in restaurant.dishes">
+                <ul class="list-unstyled dishes p-5 mb-5" v-if="restaurant">
+                    <li v-for="dish in restaurant.dishes">
                         <div v-if="!dish.ingredients.includes('acqua')"
-                         class="d-flex justify-content-between align-items-center border_bottom py-3">
+                            class="d-flex justify-content-between align-items-center border_bottom py-3">
                             <div class="info-dish">
                                 <h4 class="fw-bold">{{ dish.name }}</h4>
                                 <p class="fst-italic w-75">{{ dish.ingredients }}</p>
                                 <div class="purchase d-flex align-items-center">
                                     <b class="me-3">€ {{ dish.price }}</b>
-                                    <button @click="decrease(dish)" class="bg-transparent fs-5 border-0">-</button>
-                                    <span class="mx-3">{{ !dish.counter ? 0 : dish.counter }}</span>
-                                    <button @click="increase(dish)" class="bg-transparent fs-5 border-0">+</button>
+                                    <button @click="store.remove(dish)" class="bg-transparent fs-5 border-0">-</button>
+                                    <span class="mx-3">{{ !dish.counter ? dish.counter = 0 : dish.counter }}</span>
+                                    <button @click="store.add(dish)" class="bg-transparent fs-5 border-0">+</button>
                                 </div>
 
                             </div>
@@ -93,7 +105,7 @@ export default {
                     </li>
                 </ul>
                 <h3 class="mb-3 fw-bolder">Bevande</h3>
-                <ul class="list-unstyled dishes p-5">
+                <ul class="list-unstyled dishes p-5" v-if="restaurant">
                     <li v-for="dish in restaurant.dishes">
                         <div v-if="dish.ingredients.includes('acqua')"
                             class="d-flex justify-content-between align-items-center border_bottom py-3">
@@ -101,9 +113,9 @@ export default {
                                 <h4 class="fw-bold">{{ dish.name }}</h4>
                                 <div class="purchase d-flex align-items-center">
                                     <b class="me-3">€ {{ dish.price }}</b>
-                                    <button @click="decrease(dish)" class="bg-transparent fs-5 border-0">-</button>
-                                    <span class="mx-3">{{ !dish.counter ? 0 : dish.counter }}</span>
-                                    <button @click="increase(dish)" class="bg-transparent fs-5 border-0">+</button>
+                                    <button @click="store.remove(dish)" class="bg-transparent fs-5 border-0">-</button>
+                                    <span class="mx-3">{{ !dish.counter ? dish.counter = 0 : dish.counter }}</span>
+                                    <button @click="store.add(dish)" class="bg-transparent fs-5 border-0">+</button>
                                 </div>
                             </div>
                             <div class="drink-photo">
@@ -114,11 +126,6 @@ export default {
                 </ul>
             </div>
         </div>
-        <!-- da animare -->
-        <a href="" class="nav-link fs-3 fw-semibold cart p-3 d-none">
-            <i class="fa-solid fa-cart-shopping text-white"></i>
-            {{ store.cart.length }}
-        </a>
     </main>
 </template>
 

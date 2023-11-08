@@ -23,6 +23,12 @@ export default {
                     //console.log(store.typologies)
                 }
                 
+        //get all the restaurant
+        axios
+            .get(this.server + this.restaurants_end_point)
+            .then((response) => {
+                //console.log(response);
+                this.restaurants = response.data.restaurants;
             })
         } else {
             if (store.checkedTypologies.length > 0) {

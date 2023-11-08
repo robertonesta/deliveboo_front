@@ -21,7 +21,7 @@ export default {
                     //ceccala
                     typologySelected.checked = true;
                     //console.log(store.typologies)
-                }
+                }})
                 
         //get all the restaurant
         axios

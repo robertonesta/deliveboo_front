@@ -37,6 +37,7 @@ export const store = reactive({
             console.log(err);
             console.log(err.message);
         });
+    },
     modalMessage:'',
     isOpen:false,
     cart: [],

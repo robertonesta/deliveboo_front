@@ -28,6 +28,7 @@ export const store = reactive({
         axios
         .get(this.server + this.typologies_end_point)
         .then((response) => {
+            console.log(store.checkedTypologies)
             console.log(response.data.typologies, 'tutte le tipologie');
             this.typologies = response.data.typologies;
 

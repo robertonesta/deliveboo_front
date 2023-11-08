@@ -22,12 +22,23 @@ export default {
                     typologySelected.checked = true;
                     //console.log(store.typologies)
                 }
-
+                
             })
         } else {
+            if (store.checkedTypologies.length > 0) {
+                if(store.typologies.length > 0) {
+                    store.checkedTypologies.forEach(checkedTypology => {
+                        store.typologies.forEach(typology => {
+                            if (typology.id === checkedTypology.id) {
+                                typology.checked = true;
+                            }
+                        })
+                    })
+                }
+            } else {
+                store.getAllTypologies()
+            }
             //se non è stata fatta nessuna ricerca mostra tutti i tipi di tipologie
-            store.getAllTypologies()
-
         };
     },
     methods: {
@@ -105,14 +116,12 @@ export default {
                 console.log('checkedTypologies uguale 0')
                 store.getAllRestaurants()
             }
-
-
-
-
-
         },
         filterPerTypology(typology) {
             //se si
+            store.typologyId = typology;
+            //console.log(store.checkedTypologies)
+
             if (!typology.checked) {
                 this.checkTypologies(typology)
             } else {

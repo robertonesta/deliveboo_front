@@ -36,7 +36,8 @@ export const store = reactive({
         .catch((err) => {
             console.log(err);
             console.log(err.message);
-        });
+        })
+    },
     modalMessage:'',
     isOpen:false,
     cart: [],

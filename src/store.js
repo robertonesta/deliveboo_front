@@ -3,7 +3,7 @@ import axios from "axios";
 export const store = reactive({
     restaurants: [],
     filteredRestaurants: null,
-    checkedTypologies:[],
+    checkedTypologies: [],
     typologies: [],
     selectedTypology: "",
     typologyId: "",
@@ -12,7 +12,7 @@ export const store = reactive({
     typologies_end_point: "/api/typologies",
     cart: [],
     localStorageCart: [],
-    getAllRestaurants(){
+    getAllRestaurants() {
         axios
             .get(this.server + this.restaurants_end_point)
             .then((response) => {
@@ -24,22 +24,35 @@ export const store = reactive({
                 console.log(err.message);
             });
     },
-    getAllTypologies(){
+    getAllTypologies() {
         axios
-        .get(this.server + this.typologies_end_point)
-        .then((response) => {
-            console.log(store.checkedTypologies)
-            console.log(response.data.typologies, 'tutte le tipologie');
-            this.typologies = response.data.typologies;
+            .get(this.server + this.typologies_end_point)
+            .then((response) => {
+                console.log(store.checkedTypologies)
+                console.log(response.data.typologies, 'tutte le tipologie');
 
-        })
-        .catch((err) => {
-            console.log(err);
-            console.log(err.message);
-        });
+                this.typologies = response.data.typologies.map(typology => {
+                    //se filtro dalla home page 
+                    if (this.checkedTypologies.includes(typology.id)) {
+                        //console.log(this.checkedTypologies, 'checkedTyp store if')
+                        return {
+                            ...typology,
+                            checked: true
+                        }
+                    } else {
+                        //console.log(this.checkedTypologies, 'checkedTyp store else')
+                        return typology
+                    }
+                })
+
+            })
+            .catch((err) => {
+                console.log(err);
+                console.log(err.message);
+            });
     },
-    modalMessage:'',
-    isOpen:false,
+    modalMessage: '',
+    isOpen: false,
     cart: [],
     remove(dish) {
         //controlliamo che ci siano i piatti nel carrello

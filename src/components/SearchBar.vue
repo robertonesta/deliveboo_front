@@ -10,23 +10,10 @@ export default {
     },
     methods: {
         searchRestaurants() {
-            // Esegui una richiesta HTTP per inviare il tipo di tipologia per cui vogliamo filtrare
-            axios
-                .post(
-                    `${store.server}/api/searchRestaurants?typologyId=${store.selectedTypology}`
-                )
-                .then((response) => {
-                    // Gestisci la risposta dal server, ad esempio, aggiorna i risultati nella tua interfaccia utente
-                    //console.log(response.data.restaurants);
-                    //Salvaiamo i ristoranti filtrati
-                    store.filteredRestaurants = response.data.restaurants;
-                    //salviamo la tipologia richiesta da passare a RestaurantsPage
-                    store.typologyId = store.selectedTypology;
-                    console.log(store.typologyId,'tipologia richiesta')
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
+            //inseriamo la tipologia cercata nella home su checkedTypologies 
+            store.checkedTypologies.push(store.selectedTypology)
+            //redirect to restaurant
+            this.$router.push('/restaurants')
         },
     },
     mounted() {
@@ -75,7 +62,7 @@ export default {
                 </svg>
             </div>
         </div>
-        <router-link to="/restaurants" class="btn" @click="searchRestaurants">Cerca Ristoranti</router-link>
+        <button class="btn" @click="searchRestaurants">Cerca Ristoranti</button>
     </div>
 </template>
 

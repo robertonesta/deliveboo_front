@@ -4,185 +4,53 @@ import { store } from "../store.js"
 export default {
     data() {
         return {
-            store
+            store,
+            fullHeight: false
         };
     },
     mounted() {
-        //get all the restaurants
-        store.getAllRestaurants()
 
-        //se è stata fatta una ricerca nella home
-        if (store.typologyId > 0) {
-            console.log(store.typologyId, 'tipologia selezionata nel searchbar')
-            //cicliamo nelle tipologie
-            store.typologies.forEach(typologySelected => {
-                //se l'id della tipologia dentro le tipologie è uguale a quella richiesta 
-                if (typologySelected.id === store.typologyId) {
-                    //ceccala
-                    typologySelected.checked = true;
-                    //console.log(store.typologies)
-                }})
-                
-        //get all the restaurant
-        axios
-            .get(this.server + this.restaurants_end_point)
-            .then((response) => {
-                //console.log(response);
-                this.restaurants = response.data.restaurants;
-            })
-        } else {
-            if (store.checkedTypologies.length > 0) {
-                if(store.typologies.length > 0) {
-                    store.checkedTypologies.forEach(checkedTypology => {
-                        store.typologies.forEach(typology => {
-                            if (typology.id === checkedTypology.id) {
-                                typology.checked = true;
-                            }
-                        })
-                    })
-                }
-            } else {
-                store.getAllTypologies()
-            }
-            //se non è stata fatta nessuna ricerca mostra tutti i tipi di tipologie
-        };
+        this.fetchRestaurants()
+        store.getAllTypologies()
+    
     },
     methods: {
-        checkTypologies(typology) {
-            //cecca la checkbox
-            typology.checked = true;
-            //controlliamo se ci sono gia checkbox ceccate e le salviamo
-            store.checkedTypologies = store.typologies.filter(typologyArr => typologyArr.checked)
-            console.log(store.checkedTypologies, 'checkedTypologies')
-            //se non ne abbiamo
-            if (store.checkedTypologies.length === 1) {
-                console.log('checkedTypologies uguale 1')
-                //facciamo la 1 chiamata
-                axios
-                    .post(
-                        `${store.server}/api/searchRestaurants?typologyId=${typology.id}`
-                    )
-                    .then((response) => {
-                        //se la risposta è positiva
-                        if (response.data.restaurants.length > 0) {
-                            //salva i ristoranti
-                            store.filteredRestaurants = response.data.restaurants;
-                            console.log(store.filteredRestaurants, '1 chiamata')
-                        } else {
-                            console.log('la ricerca non ha prodotto nessun risultato')
-                            store.filteredRestaurants = []
-                        }
-                    })
-            } else if (store.checkedTypologies.length > 1) {
-                console.log('checkedTypologies maggiore di 1')
-                store.checkedTypologies = []
-                //inseriamo la nuova tipologia
-                store.checkedTypologies.push(typology)
-                //lasciamo l'ultima tipologia
-                //store.checkedTypologies  = store.checkedTypologies[store.checkedTypologies.length - 1]
-                console.log(store.checkedTypologies, 'checkedTypologies nella 2 chiamata')
-                //store.checkedTypologies.splice(0, 1, typology)
-                //facciamo la 2 chiamata
-                axios
-                    .post(
-                        `${store.server}/api/searchRestaurants?typologyId=${typology.id}`
-                    )
-                    .then((response) => {
-                        //se la risposta è positiva
-                        console.log(response, 'response')
-                        if (response.data.restaurants.length > 0) {
-                            //salva i ristoranti
-                            let newRestaurants = response.data.restaurants;
-                            console.log(newRestaurants, '2 chiamata')
-                            //creiamo un array che conterrà i ristoranti inclusi sia da newRestaurants che in store.filteredRestaurants e li mettiamo in un unico array
-                            let merged = newRestaurants.map(newRestaurant => {
-                                return store.filteredRestaurants.find(filteredRestaurant => filteredRestaurant.id === newRestaurant.id);
-                            });
-                            //console.log(merged, 'merged')
-                            if (!merged.includes(undefined)) {
-                                console.log(merged, 'merged dentro l\'if')
-                                store.filteredRestaurants = merged
-                                //cecca la checkbox
-                                typology.checked = true;
-                                //console.log(merged);
-                            } else {
-                                merged = merged.filter(restaurant => restaurant != undefined)
-                                if (merged.length > 0) {
-                                    store.filteredRestaurants = merged
-                                    console.log(merged, 'merged fuori l\'if')
-                                } else {
-                                    console.log('la ricerca non ha prodotto nessun risultato')
-                                    store.filteredRestaurants = []
-                                }
-                            }
-                        }
-                    })
-
-            } else {
-                console.log('checkedTypologies uguale 0')
-                store.getAllRestaurants()
-            }
+        fetchRestaurants() {
+            axios
+                .post(
+                    `${store.server}/api/searchRestaurants`,
+                    {
+                        typologyIds: store.checkedTypologies
+                    }
+                )
+                .then((response) => {
+                    //se la risposta è positiva
+                    //salva i ristoranti
+                    store.filteredRestaurants = response.data.restaurants;
+                })
         },
-        filterPerTypology(typology) {
-            //se si
-            store.typologyId = typology;
-            //console.log(store.checkedTypologies)
-
-            if (!typology.checked) {
-                this.checkTypologies(typology)
-            } else {
-                //la dececchiamo
-                typology.checked = false;
-                //controlliamo se ci sono gia checkbox ceccate e le salviamo
-                store.checkedTypologies = store.typologies.filter(typologyArr => typologyArr.checked)
-                console.log(store.checkedTypologies, 'se dececco')
-                if (store.checkedTypologies.length > 0) {
-                    axios
-                        .post(
-                            `${store.server}/api/searchRestaurants?typologyId=${store.checkedTypologies[0].id}`
-                        )
-                        .then((response) => {
-                            //se la risposta è positiva
-                            if (response.data.restaurants.length > 0) {
-                                //salva i ristoranti
-                                store.filteredRestaurants = response.data.restaurants;
-                                //cecca la checkbox
-                                //console.log(store.filteredRestaurants, '1 chiamata')
-                            }
-                        })
-                } else {
-                    //rimuovo tutti i ristoranti
-                    store.filteredRestaurants = null
-                    //mostro tutti i ristoranti
-                    store.getAllRestaurants()
-                    console.log(store.filteredRestaurants, 'tutti i ristoranti filtrati')
-                    console.log(store.getAllRestaurants(), 'tutti i ristoranti')
-                }
-                //this.checkTypologies(typology)
-                //se è gai ceccata allora si dececca
-                //typology.checked = false;
-                //si azzera la quantita dei ristoranti filtrati precedentemente
-                //store.filteredRestaurants = null;
-                //si fa la chiamata per ottenere tutti i ristoranti
-            }
+        selectTypology(typology){
+            //check or decheck
+            typology.checked = !typology.checked 
+            //console.log(store.typologies)
+            store.checkedTypologies = store.typologies.filter(typologyChecked => typologyChecked.checked).map(typ => typ.id)
+            //console.log(store.checkedTypologies, 'checked typologies')
+            this.fetchRestaurants()
         }
-        // Esegui una richiesta HTTP per inviare il valore selezionato al server Laravel
-
-        // TO DO: fare la ricerca filtrata multipla
     },
 }
 
 </script>
 
 <template>
-    <main class="restaurants">
+    <main class="restaurants" :class="store.filteredRestaurants && store.filteredRestaurants.length === 0 ? 'vh-100' : ''">
         <div class="container text-center align">
             <h1 class="my-5 text-white fw-semibold">Ristoranti</h1>
             <div class="text-center text-white">
                 <h4>Filtra</h4>
                 <div class="text-white d-flex justify-content-center gap-3 flex-wrap">
                     <div class="form-check d-flex gap-1" v-for="typology in store.typologies">
-                        <input @click="filterPerTypology(typology)" :checked="typology.checked" class="form-check-input"
+                        <input @click="selectTypology(typology)" :checked="typology.checked" class="form-check-input"
                             type="checkbox" :value="typology.name" :id="typology.name">
                         <label class="form-check-label" :for="typology.name">
                             {{ typology.name }}
@@ -208,7 +76,7 @@ export default {
                     </div>
                 </transition-group>
             </div>
-            <div v-else-if="store.filteredRestaurants && store.filteredRestaurants.length === 0">
+            <div v-else-if="store.filteredRestaurants && store.filteredRestaurants.length === 0" class="mt-5">
                 <p class="text-white">Non ci sono ristoranti con questo filtro di ricerca. <br> <a> Vai alla sezione con
                         tutti i Ristoranti per iniziare una nuova ricerca.</a></p>
             </div>
@@ -240,7 +108,7 @@ export default {
 @use '../styles/general.scss';
 
 main.restaurants {
-    background: url('./img/bg-restaurants-3.jpg');
+    background: url('./public/img/bg-restaurants-3.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -287,6 +155,8 @@ main.restaurants {
         }
     }
 
-
+    .vh-100 {
+        height: 100vh;
+    }
 }
 </style>

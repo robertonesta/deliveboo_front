@@ -1,4 +1,5 @@
 <script>
+import axios from "axios";
 import { store } from "../store.js"
 export default {
     data() {
@@ -10,18 +11,6 @@ export default {
     mounted() {
     },
     methods: {
-        sum(store) {
-            let total = 0;
-            let priceDish = 0;
-            if (store.cart && store.cart.length > 0) {
-                store.cart.forEach(dish => {
-                    //prezzo piatto = prezzo singolo piatto per quantita'
-                    priceDish = parseFloat(dish.price) * dish.counter;
-                    total += priceDish;
-                })
-                return total;
-            }
-        },
         deleteDish(dish) {
             if (store.cart && store.cart.length > 0) {
                 store.cart.forEach(dishCart => {
@@ -35,7 +24,8 @@ export default {
                     }
                 })
             }
-        }
+        },
+
     },
 }
 </script>
@@ -64,8 +54,8 @@ export default {
             </ul>
             <div class="fw-semibold text-center">
                 <h2>Totale</h2>
-                <p>€ {{ sum(store) }}</p>
-                <button class="btn text-white btn-success">Vai al checkout</button>
+                <p>€ {{ store.sum() }}</p>
+                <router-link to="/order" class="btn text-white btn-success">Vai al checkout</router-link>
             </div>
         </div>
         <div v-else>

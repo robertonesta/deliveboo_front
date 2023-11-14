@@ -19,6 +19,7 @@ export default {
             axios
                 .post(
                     `${store.server}/api/searchRestaurants`,
+                    //passiamo tutte le tipologie che sono ceccate
                     {
                         typologyIds: store.checkedTypologies
                     }

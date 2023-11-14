@@ -31,19 +31,21 @@ export const store = reactive({
                 console.log(store.checkedTypologies)
                 console.log(response.data.typologies, 'tutte le tipologie');
 
+                //prendiamo tutte le tipologie e controlliamo se è stata selezionata una tipologia nella home 
                 this.typologies = response.data.typologies.map(typology => {
-                    //se filtro dalla home page 
+                    //se si
                     if (this.checkedTypologies.includes(typology.id)) {
-                        //console.log(this.checkedTypologies, 'checkedTyp store if')
+                        //ritorniamo lo stesso oggetto con tutte le sue proprietà aggiungendo anche la proprietà checked su true
                         return {
                             ...typology,
                             checked: true
                         }
                     } else {
-                        //console.log(this.checkedTypologies, 'checkedTyp store else')
+                        //altrimenti ritorniamo lo stesso oggetto senza modifiche
                         return typology
                     }
                 })
+                console.log(this.typologies, 'typologies store if')
 
             })
             .catch((err) => {
@@ -122,6 +124,18 @@ export const store = reactive({
                 localStorage.setItem(`${dish.name}`, JSON.stringify(dish));
                 //console.log(store.cart, `dentro l'if !dish.counter`)
             }
+        }
+    },
+    sum() {
+        let total = 0;
+        let priceDish = 0;
+        if (store.cart && store.cart.length > 0) {
+            store.cart.forEach(dish => {
+                //prezzo piatto = prezzo singolo piatto per quantita'
+                priceDish = parseFloat(dish.price) * dish.counter;
+                total += priceDish;
+            })
+            return total;
         }
     }
 })

@@ -13,6 +13,17 @@ const router = createRouter({
             path: "/",
             name: "home",
             component: HomePage,
+            beforeEnter: (to, from, next) => {
+                // Extract the message from the URL
+                const message = to.query.message;
+          
+                // Pass the message to the component
+                if (message) {
+                  to.params.message = message;
+                }
+          
+                next();
+            }
         },
         {
             path: "/restaurants",

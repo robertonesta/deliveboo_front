@@ -19,6 +19,9 @@ export default {
 <template>
   <div class="main">
     <main>
+      <div class="alert alert-success mb-0" v-if="$route.params.message">
+        <p class="mb-0 p-0">{{ $route.params.message }}</p>
+      </div>
       <div class="container h-100 d-flex flex-column justify-content-center">
         <h1 class="w-50">Seleziona il tipo di ristorante e scegli cosa mangiare</h1>
         <div class="row">
@@ -44,7 +47,11 @@ main {
   background-position: top 50% right 10%, center;
   background-repeat: no-repeat;
 
+  .alert-success {
+    margin-top: 90px;
+    position: absolute;
+    width: 100%;
+  }
+
 }
-
-
 </style>

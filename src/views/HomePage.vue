@@ -13,16 +13,16 @@ export default {
     return {};
   },
   methods: {},
-  mounted() { 
-    if(this.$route.params.message){
+  mounted() {
+    if (this.$route.params.message) {
       //reset carrello e storage
       localStorage.clear()
-      store.localStorageCart = []
-/*       setTimeout(()=> {
+      store.cart = []
+      setTimeout(() => {
         this.$router.replace({ params: { message: null } });
-        const alertMessage = document.querySelector('alert')
+        const alertMessage = document.querySelector('.alert')
         alertMessage.classList.add('d-none')
-      }, 5000) */
+      }, 5000)
     }
   },
 };

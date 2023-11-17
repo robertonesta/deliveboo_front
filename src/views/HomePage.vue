@@ -22,7 +22,7 @@ export default {
         this.$router.replace({ params: { message: null } });
         const alertMessage = document.querySelector('.alert')
         alertMessage.classList.add('d-none')
-      }, 5000)
+      }, 3000)
     }
   },
 };

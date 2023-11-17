@@ -16,20 +16,22 @@ export default {
         send() {
             let total = store.sum()
             //console.log(total, 'total'); 
+            console.log(this.getDishes())
             axios
                 .post(store.server + '/api/orders', {
                     totalCart: total,
                     name: this.name,
                     lastname: this.lastname,
                     address: this.address,
-                    phone: this.phone
+                    phone: this.phone,
+                    dishes: this.getDishes()
                 })
 
                 .then((response) => {
                     console.log(response.data)
                     // Redirect to the Laravel view
                     const { redirectUrl } = response.data;
-                    console.log('Redirect URL:', redirectUrl);
+                    //console.log('Redirect URL:', redirectUrl);
 
                     // Redirect the user
                     window.location.href = redirectUrl;
@@ -39,6 +41,19 @@ export default {
                     console.log(err.message);
                 });
         },
+        getDishes() {
+            console.log(localStorage, 'storage')
+            // Retrieve all data from localStorage
+            let dishes = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);
+                let value = JSON.parse(localStorage.getItem(key));
+                console.log(key + ': ' + value);
+                dishes.push(value);
+            }
+
+            return dishes
+        }
     }
 }
 </script>

@@ -2,6 +2,7 @@
 import SearchBar from "../components/SearchBar.vue";
 import StaticSections from "../components/StaticSections.vue";
 import Footer from "../components/Footer.vue";
+import { store } from "../store";
 export default {
   components: {
     SearchBar,
@@ -12,7 +13,18 @@ export default {
     return {};
   },
   methods: {},
-  mounted() { },
+  mounted() { 
+    if(this.$route.params.message){
+      //reset carrello e storage
+      localStorage.clear()
+      store.localStorageCart = []
+/*       setTimeout(()=> {
+        this.$router.replace({ params: { message: null } });
+        const alertMessage = document.querySelector('alert')
+        alertMessage.classList.add('d-none')
+      }, 5000) */
+    }
+  },
 };
 </script>
 

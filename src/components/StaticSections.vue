@@ -1,11 +1,18 @@
 <script>
 export default {
-    name:'StaticSections'
+  name: 'StaticSections',
+  mounted() {
+    var image = document.querySelector('.thumbnail');
+    let parallaxed = new simpleParallax(image);
+    parallaxed.settings.orientation = 'right'
+    parallaxed.settings.overflow = true
+    parallaxed.settings.scale = 5
+  }
 }
 </script>
 <template>
-    <div>
-        <section class="first text-center">
+  <div>
+    <section class="first text-center">
       <p class="pt-5 fs-5">Ecco come funziona</p>
       <h2 class="">Non è mai stato più facile.</h2>
       <div class="container">
@@ -17,7 +24,7 @@ export default {
           </div>
           <div class="col px-3 d-flex justify-content-center align-items-center flex-column gap-3">
             <h4 class="fw-bold">Consegna veloce</h4>
-            <img src="/public/img/delivery-scooter.png" alt="" loading="lazy">
+            <img src="/public/img/delivery-scooter.png" alt="" loading="lazy" class="thumbnail">
             <p class="">Mangi dove vuoi al momento che decidi tu!</p>
           </div>
         </div>
@@ -49,13 +56,14 @@ export default {
         </div>
       </div>
     </section>
-    </div>
+  </div>
 </template>
 
 
 <style lang="scss" scoped>
 @use '../styles/variables.scss' as *;
 @use '../styles/general.scss';
+
 section.first {
   background-color: $d-boo-lighter;
 
@@ -98,4 +106,5 @@ section.third {
       color: $d-boo-darker
     }
   }
-}</style>
+}
+</style>

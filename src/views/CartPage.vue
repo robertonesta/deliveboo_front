@@ -5,7 +5,7 @@ export default {
     data() {
         return {
             store,
-            message: ''
+            message: '',
         }
     },
     mounted() {
@@ -47,7 +47,7 @@ export default {
                             <button @click="store.add(dish)" class="bg-transparent fs-5 text-white border-0">+</button>
                         </div>
                         <div>
-                            <button @click="deleteDish(dish)"><i class="fa-solid fa-trash-can"></i></button>
+                            <button @click="deleteDish(dish)"><i class="fa-solid fa-trash-can fs-4"></i></button>
                         </div>
                     </div>
                 </li>
@@ -67,14 +67,29 @@ export default {
 
 
 <style lang="scss" scoped>
+@use '../styles/variables.scss' as *;
+@use '../styles/general.scss';
+
 .container {
     color: white;
     padding-top: 90px;
-
+    
     .info-dishes {
         padding: 1rem 0;
         border: 1px solid white;
-        border-radius: 10px;
+        border-radius: 10px; 
+        transition: border 0.25s ease;
+        &:hover {
+            border-color:$d-boo-orange;
+        } 
     }
-}
-</style>
+
+    button {
+        background-color: transparent;
+        border: 0;
+
+        i {
+            color: $d-boo-orange;
+        }
+    }
+}</style>
